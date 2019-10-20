@@ -12,9 +12,13 @@ t.render(() => {
     const table = document.createElement('table');
     getHarvestJSON(t, 'time_entries?project_id=' + projectId)
     .then((data) => {
-      const hoursByDev = data.time_entries.filter(
+      const taskEntries = data.time_entries.filter(
         (entry) => { return entry.task.id === task.id; }
-      ).reduce(
+      );
+      const budget = taskEntries.length && taskEntries[0].task_assignment ?
+        taskEntries[0].task_assignment.budget
+        : null;
+      const hoursByDev = taskEntries.reduce(
         (acc, entry) => {
           acc[entry.user.name] = (acc[entry.user.name] || 0) + entry.hours;
           return acc;
@@ -31,6 +35,11 @@ t.render(() => {
       totalRow.insertCell().innerHTML = Object.values(hoursByDev).reduce(
         (sum, val) => { return sum + val; }, 0).toFixed(1);
       container.innerHTML = "";
+      if (budget) {
+        const p = document.createElement('p');
+        p.innerHTML = 'Budgeted: ' + budget + ' hours.';
+        container.appendChild(p);
+      }
       container.appendChild(table);
     }).then(() => {
       t.sizeTo('#allContainer');
