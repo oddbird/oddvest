@@ -19,6 +19,8 @@ function getEnableConfig (t) {
 }
 
 function setAuthToken (t, token) {
+  // TODO This API uses localStorage, ideally we'd catch any error here if
+  // localStorage is disabled and clarify that it needs to be turned on.
   return t.storeSecret('harvestAuthToken', token);
 }
 
