@@ -5,7 +5,9 @@ window.setTaskForm.addEventListener('submit', function(event){
   event.preventDefault();
   var sel = document.getElementById('taskId');
   var selectedOption = sel.selectedOptions[0];
-  const task = {id: parseInt(selectedOption.value), name: selectedOption.text};
+  const task = selectedOption && selectedOption.value ?
+    {id: parseInt(selectedOption.value), name: selectedOption.text}
+    : null;
   return setTask(t, task)
   .then(function(){
     t.closePopup();
