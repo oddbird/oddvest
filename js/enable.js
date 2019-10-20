@@ -3,22 +3,19 @@ var Promise = TrelloPowerUp.Promise;
 
 window.enableForm.addEventListener('submit', function(event){
   event.preventDefault();
-  return Promise.all([
-      t.set('board', 'shared', 'harvestClientId', window.clientId.value),
-      t.set('board', 'shared', 'harvestAccountId', window.accountId.value),
-  ]).then(function(){
+  setEnableConfig(t, {
+    clientId: window.clientId.value,
+    accountId: window.accountId.value,
+  }).then(function(){
     t.closePopup();
   });
 });
 
 t.render(function () {
-  return Promise.all([
-    t.get('board', 'shared', 'harvestClientId'),
-    t.get('board', 'shared', 'harvestAccountId'),
-  ])
-  .then(function (ids) {
-    window.clientId.value = ids[0] || '';
-    window.accountId.value = ids[1] || '';
+  return getEnableConfig(t)
+  .then(function (conf) {
+    window.clientId.value = conf.clientId || '';
+    window.accountId.value = conf.accountId || '';
   }).then(function () {
     t.sizeTo('#enableForm').done();
   });
