@@ -39,9 +39,9 @@ Infra:
 - Switch to async/await.
 - Add linting and Prettier.
 - Add a transpiler / build step?
+- Better styling and icons.
 
 Features:
 
 - Add task budget in time report section.
 - Add ability to start/stop a timer for the card's task, direct from the card.
-

@@ -23,11 +23,13 @@ t.render(() => {
       );
       for (const [devName, hours] of Object.entries(hoursByDev)) {
         const row = table.insertRow();
-        const nameCell = row.insertCell();
-        const hoursCell = row.insertCell();
-        nameCell.innerHTML = devName;
-        hoursCell.innerHTML = hours;
+        row.insertCell().innerHTML = devName;
+        row.insertCell().innerHTML = hours.toFixed(1);
       }
+      const totalRow = table.insertRow();
+      totalRow.insertCell().innerHTML = "Total";
+      totalRow.insertCell().innerHTML = Object.values(hoursByDev).reduce(
+        (sum, val) => { return sum + val; }, 0).toFixed(1);
       container.innerHTML = "";
       container.appendChild(table);
     }).then(() => {
