@@ -42,3 +42,15 @@ function getProjectId(t) {
   });
 }
 
+// taskData is {id, name} object
+function setTask (t, taskData) {
+  return t.set('card', 'shared', 'harvestTask', JSON.stringify(taskData));
+}
+
+function getTask (t) {
+  return t.get('card', 'shared', 'harvestTask')
+  .then(function (taskStr) {
+    return taskStr ? JSON.parse(taskStr) : null;
+  });
+}
+

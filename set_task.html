@@ -10,10 +10,13 @@
   </head>
   <body>
     <form id="setTaskForm">
-      <label for="taskName">Task:</label>
-      <input type="text" id="taskName" name="taskName" />
+      <label for="taskId">Task:</label>
+      <select id="taskId" name="taskId">
+      </select>
       <button type="submit" class="mod-primary">Save</button>
     </form>
+    <script src="./js/lib/store.js"></script>
+    <script src="./js/lib/harvest.js"></script>
     <script src="./js/set_task.js"></script>
   </body>
 </html>

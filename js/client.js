@@ -39,23 +39,23 @@ window.TrelloPowerUp.initialize({
     };
   },
   'card-badges': function(t, options) {
-      return t.get('card', 'shared', 'harvestTaskName')
-        .then(function(taskName) {
+      return getTask(t)
+        .then(function(task) {
 
         return [{
             icon: 'https://cdn.glitch.com/c69415fd-f70e-4e03-b43b-98b8960cd616%2Frocket-ship-grey.png?1496162964717',
-            text: taskName || "no task!",
-            color: taskName ? null : 'red',
+            text: task ? task.name : "no task!",
+            color: task ? null : 'red',
         }];
     });
   },
   'card-detail-badges': function(t, options) {
-    return t.get('card', 'shared', 'harvestTaskName')
-    .then(function(taskName) {
+    return getTask(t)
+    .then(function(task) {
       return [{
         title: 'Task',
-        text: taskName || 'no task!',
-        color: taskName ? null : 'red',
+        text: task ? task.name : 'no task!',
+        color: task ? null : 'red',
         callback: function(t) {
           return t.popup({
             title: "Set Task",
