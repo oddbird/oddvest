@@ -9,9 +9,16 @@
     In order to get your Harvest data, we need a Harvest OAuth2 client ID.
     If you don't have one, you can
     <a target="_blank" href="https://id.getharvest.com/developers">create an OAuth2 Application</a>.
+
+    We also need your Harvest account ID. This is the number at the end of the
+    account URL linked from <a target="_blank"
+    href="https://id.getharvest.com/accounts">here</a>.
+    
     <form id="enableForm">
       <label for="clientId">Harvest OAuth2 Client Id:</label>
       <input type="text" id="clientId" name="clientId" />
+      <label for="accountId">Harvest Account Id:</label>
+      <input type="text" id="accountId" name="accountId" />
       <button type="submit" class="mod-primary">Save</button>
     </form>
     <script src="./js/enable.js"></script>
