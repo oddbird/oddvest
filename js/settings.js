@@ -11,11 +11,9 @@ window.settingsForm.addEventListener('submit', function(event){
 t.render(function () {
   return getProjectId(t)
   .then(function (currentProjectId) {
-    ajaxGetHarvest(t, 'projects?is_active=true').then(function (event) {
-      var xhr = event.target;
-      var projects = JSON.parse(xhr.responseText).projects;
+    getHarvestJSON(t, 'projects?is_active=true').then(function (data) {
       var sel = document.getElementById('projectId');
-      for (const project of projects) {
+      for (const project of data.projects) {
         var opt = document.createElement('option');
         opt.value = project.id;
         opt.text = project.name;

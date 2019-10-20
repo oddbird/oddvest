@@ -22,12 +22,12 @@ t.render(function () {
   .then(function (taskAndProject) {
     const currentTask = taskAndProject[0];
     const projectId = taskAndProject[1];
-    ajaxGetHarvest(t, 'projects/' + projectId + '/task_assignments?is_active=true')
-    .then(function (event) {
-      var xhr = event.target;
-      var assignments = JSON.parse(xhr.responseText).task_assignments;
+    // TODO if we ever assign more than 100 tasks to a single project, this will break
+    // due to API pagination. So let's not do that, m'kay.
+    getHarvestJSON(t, 'projects/' + projectId + '/task_assignments?is_active=true')
+    .then(function (data) {
       var sel = document.getElementById('taskId');
-      for (const assignment of assignments) {
+      for (const assignment of data.task_assignments) {
         var opt = document.createElement('option');
         opt.value = assignment.task.id;
         opt.text = assignment.task.name;
