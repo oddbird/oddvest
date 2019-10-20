@@ -36,6 +36,9 @@ function setProjectId (t, projectId) {
 }
 
 function getProjectId(t) {
-  return t.get('board', 'shared', 'harvestProjectId');
+  return t.get('board', 'shared', 'harvestProjectId')
+  .then(function (projectIdStr) {
+    return parseInt(projectIdStr);
+  });
 }
 
