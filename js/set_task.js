@@ -1,3 +1,4 @@
+const Promise = TrelloPowerUp.Promise;
 var t = TrelloPowerUp.iframe();
 
 window.setTaskForm.addEventListener('submit', function(event){
@@ -12,20 +13,27 @@ window.setTaskForm.addEventListener('submit', function(event){
 });
 
 t.render(function () {
-  return getTask(t)
-  .then(function (currentTask) {
+  return Promise.all([
+    getTask(t),
+    getProjectId(t),
+  ])
+  .then(function (taskAndProject) {
+    const currentTask = taskAndProject[0];
+    const projectId = taskAndProject[1];
     ajaxGetHarvest(t, 'task_assignments?is_active=true').then(function (event) {
       var xhr = event.target;
       var assignments = JSON.parse(xhr.responseText).task_assignments;
       var sel = document.getElementById('taskId');
       for (const assignment of assignments) {
-        var opt = document.createElement('option');
-        opt.value = assignment.task.id;
-        opt.text = assignment.task.name;
-        if (currentTask && (assignment.task.id === currentTask.id)) {
-          opt.defaultSelected = true;
+        if (assignment.project.id === projectId) {
+          var opt = document.createElement('option');
+          opt.value = assignment.task.id;
+          opt.text = assignment.task.name;
+          if (currentTask && (assignment.task.id === currentTask.id)) {
+            opt.defaultSelected = true;
+          }
+          sel.add(opt);
         }
-        sel.add(opt);
       }
     });
   }).then(function () {
