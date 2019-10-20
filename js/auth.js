@@ -8,7 +8,7 @@ var redirectUri = t.signUrl(window.origin + '/auth_success.html');
 
 var authBtn = document.getElementById('authorize');
 authBtn.addEventListener('click', function() {
-  t.get('board', 'shared', 'harvestClientId').then(function (clientId) {
+  getClientId(t).then(function (clientId) {
     return 'https://id.getharvest.com/oauth2/authorize?client_id=' +
       clientId + '&response_type=token&redirect_uri=' + encodeURIComponent(redirectUri);
   }).then( function (oauthUrl) {

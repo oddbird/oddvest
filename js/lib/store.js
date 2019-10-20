@@ -7,7 +7,7 @@ function setEnableConfig (t, obj) {
 
 function getEnableConfig (t) {
   return Promise.all([
-    t.get('board', 'shared', 'harvestClientId'),
+    getClientId(t),
     t.get('board', 'shared', 'harvestAccountId'),
   ])
   .then( function (ids) {
@@ -16,6 +16,10 @@ function getEnableConfig (t) {
       accountId: ids[1],
     };
   });
+}
+
+function getClientId (t) {
+  return t.get('board', 'shared', 'harvestClientId');
 }
 
 function setAuthToken (t, token) {
