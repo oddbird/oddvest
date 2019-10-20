@@ -2,7 +2,7 @@ Promise = TrelloPowerUp.Promise;
 
 const API_BASE_URL = 'https://api.harvestapp.com/api/v2/';
 
-function ajaxGetAsync(t, path) {
+function ajaxGetHarvest(t, path) {
     return new Promise(function (resolve, reject) {
         var xhr = new XMLHttpRequest;
         xhr.addEventListener("error", reject);

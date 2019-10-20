@@ -11,7 +11,7 @@ window.settingsForm.addEventListener('submit', function(event){
 t.render(function () {
   return getProjectId(t)
   .then(function (currentProjectId) {
-    ajaxGetAsync(t, 'projects?is_active=true').then(function (event) {
+    ajaxGetHarvest(t, 'projects?is_active=true').then(function (event) {
       var xhr = event.target;
       var projects = JSON.parse(xhr.responseText).projects;
       var sel = document.getElementById('projectId');
