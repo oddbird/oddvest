@@ -45,3 +45,4 @@ Features:
 
 - Correct and performant for older time entries.
 - Add ability to start/stop a timer for the card's task, direct from the card.
+

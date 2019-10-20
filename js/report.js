@@ -6,9 +6,13 @@ t.render(() => {
     getTask(t),
     getProjectId(t),
   ]).then(([task, projectId]) => {
-    if (!task) { return };
-    document.getElementById('harvestTaskName').innerHTML = task.name;
     const container = document.getElementById('reportContainer');
+    if (!task) {
+      container.innerHTML = "";
+      t.sizeTo('#allContainer');
+      return;
+    };
+    document.getElementById('harvestTaskName').innerHTML = task.name;
     const table = document.createElement('table');
     getHarvestJSON(t, 'time_entries?project_id=' + projectId)
     .then((data) => {

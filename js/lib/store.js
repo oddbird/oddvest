@@ -1,8 +1,8 @@
 function setEnableConfig (t, obj) {
-  return Promise.all([
-      t.set('board', 'shared', 'harvestClientId', obj.clientId),
-      t.set('board', 'shared', 'harvestAccountId', obj.accountId),
-  ]);
+  return t.set('board', 'shared', {
+      harvestClientId: obj.clientId,
+      harvestAccoundId: obj.accountId,
+  });
 }
 
 function getEnableConfig (t) {
