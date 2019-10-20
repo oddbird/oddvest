@@ -22,20 +22,19 @@ t.render(function () {
   .then(function (taskAndProject) {
     const currentTask = taskAndProject[0];
     const projectId = taskAndProject[1];
-    ajaxGetHarvest(t, 'task_assignments?is_active=true').then(function (event) {
+    ajaxGetHarvest(t, 'projects/' + projectId + '/task_assignments?is_active=true')
+    .then(function (event) {
       var xhr = event.target;
       var assignments = JSON.parse(xhr.responseText).task_assignments;
       var sel = document.getElementById('taskId');
       for (const assignment of assignments) {
-        if (assignment.project.id === projectId) {
-          var opt = document.createElement('option');
-          opt.value = assignment.task.id;
-          opt.text = assignment.task.name;
-          if (currentTask && (assignment.task.id === currentTask.id)) {
-            opt.defaultSelected = true;
-          }
-          sel.add(opt);
+        var opt = document.createElement('option');
+        opt.value = assignment.task.id;
+        opt.text = assignment.task.name;
+        if (currentTask && (assignment.task.id === currentTask.id)) {
+          opt.defaultSelected = true;
         }
+        sel.add(opt);
       }
     });
   }).then(function () {
