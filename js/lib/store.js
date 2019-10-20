@@ -10,10 +10,10 @@ function getEnableConfig (t) {
     getClientId(t),
     t.get('board', 'shared', 'harvestAccountId'),
   ])
-  .then( function (ids) {
+  .then( function ([clientId, accountId]) {
     return {
-      clientId: ids[0],
-      accountId: ids[1],
+      clientId,
+      accountId,
     };
   });
 }
