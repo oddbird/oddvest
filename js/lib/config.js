@@ -18,6 +18,17 @@ function getEnableConfig (t) {
   });
 }
 
+function setAuthToken (t, token) {
+  return t.storeSecret('harvestAuthToken', token);
+}
+
+function getAuthToken (t) {
+  return t.loadSecret('harvestAuthToken').catch( function (e) {
+    console.log(e);
+    return null;
+  });
+}
+
 function setProjectId (t, projectId) {
   return t.set('board', 'shared', 'harvestProjectId', projectId);
 }

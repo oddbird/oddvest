@@ -4,7 +4,7 @@ t.render(function() {
   return t.sizeTo('#content');
 })
 
-var redirectUri = window.origin + '/auth_success.html';
+var redirectUri = t.signUrl(window.origin + '/auth_success.html');
 
 var authBtn = document.getElementById('authorize');
 authBtn.addEventListener('click', function() {
@@ -14,7 +14,7 @@ authBtn.addEventListener('click', function() {
   }).then( function (oauthUrl) {
     t.authorize(oauthUrl)
     .then(function(token) {
-      return t.set('member', 'private', 'harvestAuthToken', token)
+      return setAuthToken(t, token);
     })
     .then(function() {
       return t.closePopup();

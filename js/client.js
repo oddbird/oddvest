@@ -66,7 +66,7 @@ window.TrelloPowerUp.initialize({
     });
   },
   'authorization-status': function(t, options) {
-    return t.get('member', 'private', 'harvestAuthToken')
+    return getAuthToken(t)
     .then(function(authToken) {
       // TODO actually check if the authToken is valid
       return { authorized: authToken != null }
