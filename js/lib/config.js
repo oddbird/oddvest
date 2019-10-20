@@ -18,3 +18,11 @@ function getEnableConfig (t) {
   });
 }
 
+function setProjectId (t, projectId) {
+  return t.set('board', 'shared', 'harvestProjectId', projectId);
+}
+
+function getProjectId(t) {
+  return t.get('board', 'shared', 'harvestProjectId');
+}
+
