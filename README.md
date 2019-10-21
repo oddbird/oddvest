@@ -2,6 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/oddbird/oddvest.svg?style=svg)](https://circleci.com/gh/oddbird/oddvest)
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ac38ae99-f54e-436c-a0c9-5b4519a1bba4/deploy-status)](https://app.netlify.com/sites/oddvest/deploys)
+
 OddBird's Trello Power-up for Harvest integration.
 
 Allows selecting a Harvest project per Trello board, a Harvest task from that
