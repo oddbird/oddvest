@@ -10,6 +10,20 @@ Allows selecting a Harvest project per Trello board, a Harvest task from that
 project per Trello card, and then provides an up-to-date report of time tracked
 per developer on that task on the back of the card.
 
+### Why not use the official Harvest power-up?
+
+Because it doesn't do what we need. The time report it attaches to a card only
+includes time entries tracked using the Harvest button on that card. There's no
+way to track time from any other Harvest surface and have it included in the
+time report for a card. This doesn't work for us for several reasons: we often
+budget time in larger-scope Harvest tasks that end up mapping to multiple
+Trello cards, and our devs don't want to be restricted to only tracking their
+time via the Harvest button on a Trello card.
+
+Oddvest allows us to associate any number of Trello cards with the same Harvest
+task, and each of those cards will show a complete time report for that Harvest
+task.
+
 ## Setup
 
 Enable the power-up on your Trello board. It'll pop up an initial configuration
