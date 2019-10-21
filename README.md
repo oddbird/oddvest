@@ -16,7 +16,9 @@ Enable the power-up on your Trello board. It'll pop up an initial configuration
 box where you give it a "Client Id" from your Harvest OAuth2 application, and
 your Harvest "Account Id" (a seven-digit number); the popup includes links on
 where you can find/create those. A single Harvest OAuth2 application can be
-reused for many Trello boards, as long as they are on the same account.
+reused for many Trello boards, as long as they are on the same account. (Note
+for OddBird: the client ID and account ID for our production Oddvest OAuth2
+application are in Keybase under `oddvest/` folder.)
 
 Sometimes the popup will disappear before you get a chance to fill it out, if
 you click off to other browser tabs/windows. If this happens you just have to
