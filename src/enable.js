@@ -1,5 +1,6 @@
+import { getEnableConfig, setEnableConfig } from './lib/store';
+
 const t = TrelloPowerUp.iframe();
-const Promise = TrelloPowerUp.Promise;
 
 window.enableForm.addEventListener('submit', (event) => {
   event.preventDefault();

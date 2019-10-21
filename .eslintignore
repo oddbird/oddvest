@@ -3,6 +3,7 @@
 .nyc_output/
 .vscode/
 coverage/
+dist/
 htmlcov/
 jscache/
 node_modules/

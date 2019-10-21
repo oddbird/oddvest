@@ -1,8 +1,10 @@
-const Promise = TrelloPowerUp.Promise;
+import { getHarvestJSON } from './lib/harvest';
+import { getProjectId, getTask, TrelloPromise } from './lib/store';
+
 const t = TrelloPowerUp.iframe();
 
 t.render(() =>
-  Promise.all([getTask(t), getProjectId(t)]).then(([task, projectId]) => {
+  TrelloPromise.all([getTask(t), getProjectId(t)]).then(([task, projectId]) => {
     const container = document.getElementById('reportContainer');
     if (!task) {
       container.innerHTML = '';

@@ -1,3 +1,6 @@
+import { getHarvestJSON } from './lib/harvest';
+import { getProjectId, setProjectId } from './lib/store';
+
 const t = TrelloPowerUp.iframe();
 
 window.settingsForm.addEventListener('submit', (event) => {

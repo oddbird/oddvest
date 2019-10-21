@@ -48,6 +48,9 @@ Format and lint all files with `yarn lint`.
 
 Infra:
 
+- Add docs for file structure.
+- Add docs for deployment.
+- Add docs for local testing.
 - Add unit testing.
 - Switch to async/await.
 - Add linting and Prettier.

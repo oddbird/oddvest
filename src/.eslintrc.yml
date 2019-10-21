@@ -1,0 +1,13 @@
+# http://eslint.org/docs/rules/
+
+env:
+  browser: true
+  node: false
+globals:
+  TrelloPowerUp: readonly
+plugins:
+  - simple-import-sort
+rules:
+  # Import
+  simple-import-sort/sort: 1
+  import/order: 0
