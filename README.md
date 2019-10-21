@@ -62,6 +62,37 @@ yarn test
 
 Format and lint all files with `yarn lint`.
 
+In order to actually try out your local changes with Trello & Harvest (which is
+necessary to have any confidence in your changes, given the nature of the
+project), you'll need a few additional things set up:
+
+1. Start a server that can serve your local checkout. Just cd into the
+   `oddvest` directory and run `python3 -m http.server 80`. This will
+   take over that terminal until you Ctrl-C to stop it.
+
+2. Expose this server to the Internet via `ngrok`. Install it (from ngrok.io)
+   if you don't have it already, then run `ngrok http 80`. Copy the HTTPS url
+   it gives you (something like `https://8c370def.ngrok.io`) for later use.
+   This will also take over a terminal until you Ctrl-C out of it.
+
+3. Create an OAuth2 application at Harvest. Visit
+   https://id.getharvest.com/developers and click "Create New OAuth2
+   Application." Paste the ngrok URL from above into the "Redirect URL" and
+   "Origin URL" boxes. Make sure NOT to include a trailing slash. "I need
+   access to one account" and "I want access to Harvest" is all you need.
+
+4. Create a new Trello Power-Up specifically for your local development of
+   OddVest at https://trello.com/power-ups. The "Iframe Connector URL" should
+   be your ngrok URL from above. On the Capabilities tab, you need to enable
+   "On Enable", "Show Settings", "Card Buttons", "Card Badges", "Card Detail
+   Badges", "Card-back Section", "Authorization Status" and "Show
+   Authorization" capabilities. Note that changes on the capabilities tab don't
+   seem to save unless you go back to the main tab and clieck the Save button.
+
+5. On some test board where you won't disrupt others' work, enable your test
+   power-up (per the instructions above). Now this board will use your local
+   version of Oddvest.
+
 ### Project layout
 
 Trello loads `index.html` in an iframe and calls the `t.initialize()` method in
@@ -82,15 +113,12 @@ are automatically built by Netlify on deploy.
 
 Push to master on GitHub and your changes will be automatically deployed.
 
-### Local dev
-
 ## TODO
 
 Infra:
 
 - Graceful handling of not-yet-authorized state.
 - See if we can avoid asking for write perms to Harvest.
-- Add docs for local testing.
 - Add more unit tests.
 - Switch to async/await.
 - Better styling and icons.
