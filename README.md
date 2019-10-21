@@ -1,5 +1,7 @@
 # Oddvest
 
+[![CircleCI](https://circleci.com/gh/oddbird/oddvest.svg?style=svg)](https://circleci.com/gh/oddbird/oddvest)
+
 OddBird's Trello Power-up for Harvest integration.
 
 Allows selecting a Harvest project per Trello board, a Harvest task from that
@@ -30,7 +32,7 @@ Oddvest!
 
 ## Development
 
-Install node & [yarn](https://yarnpkg.com/en/docs/install#mac-stable):
+Install node & [yarn](https://yarnpkg.com/en/docs/install):
 
 We recommend using [nvm](https://github.com/nvm-sh/nvm) for node version
 management. Once you have it installed, run `nvm install` (once per active
@@ -40,6 +42,18 @@ Install dependencies:
 
 ```
 yarn
+```
+
+To compile the JS files, run `yarn build`.
+
+You can also run individual development commands:
+
+```
+# format and lint all files
+yarn lint
+
+# run JS tests
+yarn test
 ```
 
 Format and lint all files with `yarn lint`.
@@ -53,7 +67,6 @@ Infra:
 - Add docs for local testing.
 - Add unit testing.
 - Switch to async/await.
-- Add linting and Prettier.
 - Add a transpiler / build step?
 - Better styling and icons.
 

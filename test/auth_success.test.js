@@ -1,22 +1,24 @@
 describe('auth_success', () => {
-  // let search;
+  const { location } = window;
 
-  // beforeEach(() => {
-  //   search = window.location.search;
-  //   window.location.search = '?access_token=test_token';
-  //   window.opener = {
-  //     authorize: jest.fn(),
-  //   };
-  //   window.close = jest.fn();
-  // });
+  beforeAll(() => {
+    window.opener = {
+      authorize: jest.fn(),
+    };
+    window.close = jest.fn();
+    delete window.location;
+    window.location = {
+      search: '?access_token=test_token',
+    };
+  });
 
-  // afterAll(() => {
-  //   window.location.search = search;
-  //   Reflect.deleteProperty(window, 'opener');
-  //   Reflect.deleteProperty(window, 'close');
-  // });
+  afterAll(() => {
+    window.location = location;
+  });
 
-  test('adds 1 + 2 to equal 3', () => {
-    expect(1 + 2).toBe(3);
+  test('calls window.opener.authorize with token', () => {
+    require('../src/auth_success');
+
+    expect(window.opener.authorize).toHaveBeenCalledWith('test_token');
   });
 });

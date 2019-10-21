@@ -14,3 +14,5 @@ rules:
   # Import
   simple-import-sort/sort: 1
   import/order: 0
+
+  global-require: 0
