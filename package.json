@@ -1,0 +1,47 @@
+{
+  "name": "oddvest",
+  "version": "1.0.0",
+  "description": "OddBird's Trello Power-up for Harvest integration",
+  "main": "js/client.js",
+  "repository": "github:oddbird/oddvest",
+  "author": "Carl Meyer <carl@oddbird.net>",
+  "contributors": [
+    "Jonny Gerig Meyer <jonny@oddbird.net>"
+  ],
+  "license": "SEE LICENSE IN LICENSE",
+  "private": true,
+  "engines": {
+    "node": "10.16.3"
+  },
+  "scripts": {
+    "prettier:js": "prettier --write \"**/*.js\"",
+    "prettier:other": "prettier --write \"**/*.{json,yml,md,html}\"",
+    "eslint": "eslint \"**/*.js\" --fix",
+    "lint": "run-s prettier:* eslint"
+  },
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "husky": "^3.0.9",
+    "lint-staged": "^9.4.2",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.18.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{json,yml,md,html}": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}

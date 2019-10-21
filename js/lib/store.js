@@ -1,60 +1,54 @@
-function setEnableConfig (t, obj) {
+function setEnableConfig(t, obj) {
   return t.set('board', 'shared', {
-      harvestClientId: obj.clientId,
-      harvestAccoundId: obj.accountId,
+    harvestClientId: obj.clientId,
+    harvestAccoundId: obj.accountId,
   });
 }
 
-function getEnableConfig (t) {
+function getEnableConfig(t) {
   return Promise.all([
     getClientId(t),
     t.get('board', 'shared', 'harvestAccountId'),
-  ])
-  .then( function ([clientId, accountId]) {
-    return {
-      clientId,
-      accountId,
-    };
-  });
+  ]).then(([clientId, accountId]) => ({
+    clientId,
+    accountId,
+  }));
 }
 
-function getClientId (t) {
+function getClientId(t) {
   return t.get('board', 'shared', 'harvestClientId');
 }
 
-function setAuthToken (t, token) {
+function setAuthToken(t, token) {
   // TODO This API uses localStorage, ideally we'd catch any error here if
   // localStorage is disabled and clarify that it needs to be turned on.
   return t.storeSecret('harvestAuthToken', token);
 }
 
-function getAuthToken (t) {
-  return t.loadSecret('harvestAuthToken').catch( function (e) {
+function getAuthToken(t) {
+  return t.loadSecret('harvestAuthToken').catch((e) => {
     console.log(e);
     return null;
   });
 }
 
-function setProjectId (t, projectId) {
+function setProjectId(t, projectId) {
   return t.set('board', 'shared', 'harvestProjectId', projectId);
 }
 
 function getProjectId(t) {
-  return t.get('board', 'shared', 'harvestProjectId')
-  .then(function (projectIdStr) {
-    return parseInt(projectIdStr);
-  });
+  return t
+    .get('board', 'shared', 'harvestProjectId')
+    .then((projectIdStr) => parseInt(projectIdStr));
 }
 
 // taskData is {id, name} object
-function setTask (t, taskData) {
+function setTask(t, taskData) {
   return t.set('card', 'shared', 'harvestTask', JSON.stringify(taskData));
 }
 
-function getTask (t) {
-  return t.get('card', 'shared', 'harvestTask')
-  .then(function (taskStr) {
-    return taskStr ? JSON.parse(taskStr) : null;
-  });
+function getTask(t) {
+  return t
+    .get('card', 'shared', 'harvestTask')
+    .then((taskStr) => (taskStr ? JSON.parse(taskStr) : null));
 }
-

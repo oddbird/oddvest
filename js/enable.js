@@ -1,23 +1,23 @@
-var t = TrelloPowerUp.iframe();
-var Promise = TrelloPowerUp.Promise;
+const t = TrelloPowerUp.iframe();
+const Promise = TrelloPowerUp.Promise;
 
-window.enableForm.addEventListener('submit', function(event){
+window.enableForm.addEventListener('submit', (event) => {
   event.preventDefault();
   setEnableConfig(t, {
     clientId: window.clientId.value,
     accountId: window.accountId.value,
-  }).then(function(){
+  }).then(() => {
     t.closePopup();
   });
 });
 
-t.render(function () {
-  return getEnableConfig(t)
-  .then(function (conf) {
-    window.clientId.value = conf.clientId || '';
-    window.accountId.value = conf.accountId || '';
-  }).then(function () {
-    t.sizeTo('#enableForm').done();
-  });
-});
-
+t.render(() =>
+  getEnableConfig(t)
+    .then((conf) => {
+      window.clientId.value = conf.clientId || '';
+      window.accountId.value = conf.accountId || '';
+    })
+    .then(() => {
+      t.sizeTo('#enableForm').done();
+    }),
+);

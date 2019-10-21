@@ -1,5 +1,4 @@
-Oddvest
-=======
+# Oddvest
 
 OddBird's Trello Power-up for Harvest integration.
 
@@ -7,8 +6,7 @@ Allows selecting a Harvest project per Trello board, a Harvest task from that
 project per Trello card, and then provides an up-to-date report of time tracked
 per developer on that task on the back of the card.
 
-Setup
------
+## Setup
 
 Enable the power-up on your Trello board. It'll pop up an initial configuration
 box where you give it a "Client Id" from your Harvest OAuth2 application, and
@@ -30,8 +28,23 @@ Harvest project you want to use with this board from a dropdown of the projects
 in your Harvest account. Save this and your Trello board is all set up for
 Oddvest!
 
-TODO
-----
+## Development
+
+Install node & [yarn](https://yarnpkg.com/en/docs/install#mac-stable):
+
+We recommend using [nvm](https://github.com/nvm-sh/nvm) for node version
+management. Once you have it installed, run `nvm install` (once per active
+shell) to use the correct version of node for Oddvest development.
+
+Install dependencies:
+
+```
+yarn
+```
+
+Format and lint all files with `yarn lint`.
+
+## TODO
 
 Infra:
 
@@ -45,4 +58,3 @@ Features:
 
 - Correct and performant for older time entries.
 - Add ability to start/stop a timer for the card's task, direct from the card.
-
