@@ -60,16 +60,37 @@ yarn test
 
 Format and lint all files with `yarn lint`.
 
+### Project layout
+
+Trello loads `index.html` in an iframe and calls the `t.initialize()` method in
+`src/client.js`. All other HTML files are loaded in some other iframe when some
+action is taken in Trello UI; those should all be referenced in `client.js`.
+
+The `.js` files in `src/` correspond one-to-one with the HTML files, and are
+loaded by the corresponding HTML file. The files in `js/lib/` are library code
+that is used by multiple entry-point JS files. Each entry-point JS file and the
+library files it depends on are bundled/transpiled by rollup/babel into a
+generated file in `dist/` which is actually referenced from the corresponding
+HTML file.
+
+Files in `dist/` are git-ignored but are needed for local dev (see below) and
+are automatically built by Netlify on deploy.
+
+### Deployment
+
+Push to master on GitHub and your changes will be automatically deployed.
+
+### Local dev
+
 ## TODO
 
 Infra:
 
-- Add docs for file structure.
-- Add docs for deployment.
+- Graceful handling of not-yet-authorized state.
+- See if we can avoid asking for write perms to Harvest.
 - Add docs for local testing.
-- Add unit testing.
+- Add more unit tests.
 - Switch to async/await.
-- Add a transpiler / build step?
 - Better styling and icons.
 
 Features:
