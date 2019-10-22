@@ -18,7 +18,7 @@ declare global {
 
   type Trello = TrelloSync & TrelloAsync;
 
-  type HarvestAPIReponse = {
+  type HarvestAPIResponse = {
     per_page: number;
     total_pages: number;
     total_entries: number;

@@ -53,7 +53,7 @@ interface TimeEntry {
   };
 }
 
-interface TimeEntriesData extends HarvestAPIReponse {
+interface TimeEntriesData extends HarvestAPIResponse {
   time_entries: TimeEntry[];
 }
 

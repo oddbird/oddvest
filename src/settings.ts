@@ -28,7 +28,7 @@ interface Project {
   client: { id: number; name: string; currency: string };
 }
 
-interface ProjectsData extends HarvestAPIReponse {
+interface ProjectsData extends HarvestAPIResponse {
   projects: Project[];
 }
 

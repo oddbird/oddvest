@@ -13,7 +13,7 @@ interface TaskAssignment {
   task: { id: number; name: string };
 }
 
-interface TaskAssignmentsData extends HarvestAPIReponse {
+interface TaskAssignmentsData extends HarvestAPIResponse {
   task_assignments: TaskAssignment[];
 }
 
