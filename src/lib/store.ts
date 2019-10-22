@@ -15,7 +15,7 @@ export const setEnableConfig = (
 ) =>
   t.set('board', 'shared', {
     harvestClientId: clientId,
-    harvestAccoundId: accountId,
+    harvestAccountId: accountId,
   });
 
 export const getEnableConfig = (t: Trello) =>
