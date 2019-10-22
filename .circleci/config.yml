@@ -16,5 +16,5 @@ jobs:
           paths:
             - ./node_modules
       - run:
-          name: Lint files
+          name: Lint and type-check files
           command: yarn lint

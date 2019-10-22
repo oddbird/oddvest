@@ -2,12 +2,16 @@ import { getAuthToken, getEnableConfig, TrelloPromise } from './store';
 
 const API_BASE_URL = 'https://api.harvestapp.com/api/v2/';
 
-export const getHarvestJSON = (t, path) =>
-  new TrelloPromise((resolve, reject) => {
+export const getHarvestJSON = (t: Trello, path: string) =>
+  new TrelloPromise<any>((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('error', reject);
-    xhr.addEventListener('load', (event) => {
-      resolve(JSON.parse(event.target.responseText));
+    xhr.addEventListener('load', function cb() {
+      try {
+        resolve(JSON.parse(this.responseText));
+      } catch (error) {
+        reject(error);
+      }
     });
     xhr.open('GET', API_BASE_URL + path);
     TrelloPromise.all([getEnableConfig(t), getAuthToken(t)]).then((results) => {

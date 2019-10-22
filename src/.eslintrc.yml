@@ -1,5 +1,9 @@
 # http://eslint.org/docs/rules/
 
+parser: '@typescript-eslint/parser'
+parserOptions:
+  sourceType: module
+  project: ./tsconfig.json
 env:
   browser: true
   node: false
@@ -7,7 +11,17 @@ globals:
   TrelloPowerUp: readonly
 plugins:
   - simple-import-sort
+  - '@typescript-eslint'
+extends:
+  - plugin:import/typescript
+  - plugin:@typescript-eslint/eslint-recommended
+  - plugin:@typescript-eslint/recommended
+  - prettier/@typescript-eslint
 rules:
+  # TypeScript
+  '@typescript-eslint/no-explicit-any': 0
+  '@typescript-eslint/explicit-function-return-type': 0
+
   # Import
   simple-import-sort/sort: 1
   import/order: 0

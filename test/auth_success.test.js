@@ -1,3 +1,5 @@
+import authSuccess from '../src/auth_success';
+
 describe('auth_success', () => {
   const { location } = window;
 
@@ -17,7 +19,7 @@ describe('auth_success', () => {
   });
 
   test('calls window.opener.authorize with token', () => {
-    require('../src/auth_success');
+    authSuccess();
 
     expect(window.opener.authorize).toHaveBeenCalledWith('test_token');
   });

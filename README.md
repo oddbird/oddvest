@@ -62,15 +62,15 @@ Install dependencies:
 yarn
 ```
 
-To compile the JS files, run `yarn build`.
+To compile the JavaScript/TypeScript files, run `yarn build`.
 
 You can also run individual development commands:
 
 ```
-# format and lint all files
+# format/lint all files, and type-check TypeScript files
 yarn lint
 
-# run JS tests
+# run unit tests
 yarn test
 ```
 
@@ -110,11 +110,11 @@ project), you'll need a few additional things set up:
 ### Project layout
 
 Trello loads `index.html` in an iframe and calls the `t.initialize()` method in
-`src/client.js`. All other HTML files are loaded in some other iframe when some
-action is taken in Trello UI; those should all be referenced in `client.js`.
+`src/client.ts`. All other HTML files are loaded in some other iframe when some
+action is taken in Trello UI; those should all be referenced in `client.ts`.
 
-The `.js` files in `src/` correspond one-to-one with the HTML files, and are
-loaded by the corresponding HTML file. The files in `js/lib/` are library code
+The `.ts` files in `src/` correspond one-to-one with the HTML files, and are
+loaded by the corresponding HTML file. The files in `src/lib/` are library code
 that is used by multiple entry-point JS files. Each entry-point JS file and the
 library files it depends on are bundled/transpiled by rollup/babel into a
 generated file in `dist/` which is actually referenced from the corresponding
@@ -133,7 +133,6 @@ Infra:
 
 - Graceful handling of not-yet-authorized state.
 - See if we can avoid asking for write perms to Harvest.
-- TypeScript.
 - Add more unit tests.
 - Switch to async/await.
 - Better styling and icons.

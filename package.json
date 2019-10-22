@@ -13,10 +13,11 @@
     "node": "10.16.3"
   },
   "scripts": {
-    "prettier:js": "prettier --write \"**/*.js\"",
+    "prettier:js": "prettier --write \"**/*.{js,ts}\"",
     "prettier:other": "prettier --write \"**/*.{json,yml,md,html}\"",
-    "eslint": "eslint \"**/*.js\" --fix",
-    "lint": "run-s prettier:* eslint",
+    "eslint": "eslint \"**/*.{js,ts}\" --ext .js,.ts --fix",
+    "tsc": "tsc",
+    "lint": "run-s prettier:* eslint tsc",
     "test:watch": "jest --watchAll",
     "test": "jest",
     "build": "rollup -c"
@@ -24,9 +25,13 @@
   "devDependencies": {
     "@babel/core": "^7.6.4",
     "@babel/preset-env": "^7.6.3",
-    "core-js": "^3.3.2",
+    "@types/bluebird": "^3.5.28",
+    "@typescript-eslint/eslint-plugin": "^2.5.0",
+    "@typescript-eslint/parser": "^2.5.0",
+    "core-js": "^3.3.3",
     "eslint": "^6.5.1",
     "eslint-config-prettier": "^6.4.0",
+    "eslint-import-resolver-typescript": "^2.0.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-simple-import-sort": "^4.0.0",
@@ -38,7 +43,11 @@
     "rollup": "^1.25.1",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.1.2",
+    "rollup-plugin-typescript": "^1.0.1",
+    "tslib": "^1.10.0",
+    "typescript": "^3.6.4"
   },
   "husky": {
     "hooks": {
@@ -46,7 +55,7 @@
     }
   },
   "lint-staged": {
-    "*.js": [
+    "*.{js,ts}": [
       "prettier --write",
       "eslint --fix",
       "git add"

@@ -1,8 +1,6 @@
 # http://eslint.org/docs/rules/
 
 root: true
-parserOptions:
-  sourceType: module
 env:
   es2017: true
   node: true
@@ -13,6 +11,12 @@ extends:
   - eslint:recommended
   - plugin:import/recommended
   - plugin:prettier/recommended
+settings:
+  import/extensions:
+    - .js
+    - .ts
+  import/resolver:
+    typescript: {}
 rules:
   # Prettier
   prettier/prettier:
@@ -79,6 +83,7 @@ rules:
     - 1
     - terms:
         - todo
+        - TODO
         - fixme
         - '@@@'
   no-with: 2
