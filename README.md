@@ -1,10 +1,6 @@
 # Oddvest
 
-[![CircleCI](https://circleci.com/gh/oddbird/oddvest.svg?style=svg)](https://circleci.com/gh/oddbird/oddvest)
-
-[![Coverage Status](https://coveralls.io/repos/github/oddbird/oddvest/badge.svg?branch=master)](https://coveralls.io/github/oddbird/oddvest?branch=master)
-
-[![Netlify Status](https://api.netlify.com/api/v1/badges/ac38ae99-f54e-436c-a0c9-5b4519a1bba4/deploy-status)](https://app.netlify.com/sites/oddvest/deploys)
+[![CircleCI](https://circleci.com/gh/oddbird/oddvest.svg?style=svg)](https://circleci.com/gh/oddbird/oddvest) [![Coverage Status](https://coveralls.io/repos/github/oddbird/oddvest/badge.svg?branch=master)](https://coveralls.io/github/oddbird/oddvest?branch=master) [![Netlify Status](https://api.netlify.com/api/v1/badges/ac38ae99-f54e-436c-a0c9-5b4519a1bba4/deploy-status)](https://app.netlify.com/sites/oddvest/deploys)
 
 OddBird's Trello Power-up for Harvest integration.
 
@@ -18,9 +14,9 @@ Because it doesn't do what we need. The time report it attaches to a card only
 includes time entries tracked using the Harvest button on that card. There's no
 way to track time from any other Harvest surface and have it included in the
 time report for a card. This doesn't work for us for several reasons: we often
-budget time in larger-scope Harvest tasks that end up mapping to multiple
-Trello cards, and our devs don't want to be restricted to only tracking their
-time via the Harvest button on a Trello card.
+budget time in larger-scope Harvest tasks that end up mapping to multiple Trello
+cards, and our devs don't want to be restricted to only tracking their time via
+the Harvest button on a Trello card.
 
 Oddvest allows us to associate any number of Trello cards with the same Harvest
 task, and each of those cards will show a complete time report for that Harvest
@@ -41,8 +37,8 @@ you click off to other browser tabs/windows. If this happens you just have to
 disable and then re-enable the power-up to get the config window again.
 
 Once this is done, you can click the gear icon on the power-up and choose
-Authorize from the menu to connect your Trello account to Harvest. This will
-pop up a new window to grant Oddvest access to your Harvest account.
+Authorize from the menu to connect your Trello account to Harvest. This will pop
+up a new window to grant Oddvest access to your Harvest account.
 
 Then the last setup step is to click the gear icon again and choose "Edit
 Power-up Settings", which will bring up another popup where you can choose the
@@ -76,38 +72,38 @@ yarn lint
 yarn test
 ```
 
-Format and lint all files with `yarn lint`.
-
 In order to actually try out your local changes with Trello & Harvest (which is
 necessary to have any confidence in your changes, given the nature of the
 project), you'll need a few additional things set up:
 
-1. Start a server that can serve your local checkout. Just cd into the
-   `oddvest` directory and run `python3 -m http.server 80`. This will
-   take over that terminal until you Ctrl-C to stop it.
+1. Start a server that can serve your local checkout. Just cd into the `oddvest`
+   directory and run `python3 -m http.server 80`. This will take over that
+   terminal until you Ctrl-C to stop it.
 
-2. Expose this server to the Internet via `ngrok`. Install it (from ngrok.io)
-   if you don't have it already, then run `ngrok http 80`. Copy the HTTPS url
-   it gives you (something like `https://8c370def.ngrok.io`) for later use.
-   This will also take over a terminal until you Ctrl-C out of it.
+2. Expose this server to the Internet via `ngrok`. Install it (from
+   https://ngrok.com/) if you don't have it already, then open another terminal
+   and run `ngrok http 80`. Copy the HTTPS url it gives you (something like
+   `https://8c370def.ngrok.io`) for later use. This will also take over a
+   terminal until you Ctrl-C out of it.
 
 3. Create an OAuth2 application at Harvest. Visit
    https://id.getharvest.com/developers and click "Create New OAuth2
    Application." Paste the ngrok URL from above into the "Redirect URL" and
-   "Origin URL" boxes. Make sure NOT to include a trailing slash. "I need
-   access to one account" and "I want access to Harvest" is all you need.
+   "Origin URL" boxes. Make sure NOT to include a trailing slash. "I need access
+   to one account" and "I want access to Harvest" is all you need.
 
 4. Create a new Trello Power-Up specifically for your local development of
    OddVest at https://trello.com/power-ups/admin. The "Iframe Connector URL"
    should be your ngrok URL from above. On the Capabilities tab, you need to
-   enable "On Enable", "Show Settings", "Card Buttons", "Card Badges", "Card
-   Detail Badges", "Card-back Section", "Authorization Status" and "Show
+   enable "Card Back Section", "Card Badges", "Card Buttons", "Card Detail
+   Badges", "On Enable", "Show Settings", "Authorization Status", and "Show
    Authorization" capabilities. Note that changes on the capabilities tab don't
    seem to save unless you go back to the main tab and click the Save button.
 
 5. On some test board where you won't disrupt others' work, make sure the prod
    Oddvest power-up is disabled and enable your test power-up (per the
-   instructions above). Now this board will use your local version of Oddvest.
+   [instructions above](#setup)). Now this board will use your local version of
+   Oddvest.
 
 ### Project layout
 
@@ -127,7 +123,7 @@ are automatically built by Netlify on deploy.
 
 ### Deployment
 
-Push to master on GitHub and your changes will be automatically deployed.
+Push to `master` on GitHub and your changes will be automatically deployed.
 
 ## TODO
 
@@ -136,6 +132,7 @@ Infra:
 - Graceful handling of not-yet-authorized state.
 - See if we can avoid asking for write perms to Harvest.
 - Add more unit tests.
+- Add sourcemaps.
 - Better styling and icons.
 
 Features:
