@@ -18,3 +18,14 @@ jobs:
       - run:
           name: Lint and type-check files
           command: yarn lint
+      - run:
+          name: Run unit tests
+          command: yarn test:ci
+      - run:
+          name: Report Test Coverage
+          command: yarn test:coverage
+      - store_artifacts:
+          path: coverage
+          destination: js-reports
+      - store_test_results:
+          path: coverage

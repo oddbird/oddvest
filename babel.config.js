@@ -21,6 +21,7 @@ module.exports = {
             useBuiltIns: 'usage',
           },
         ],
+        '@babel/preset-typescript',
       ],
     },
   },
