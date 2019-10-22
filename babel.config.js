@@ -6,6 +6,7 @@ module.exports = {
         modules: false,
         corejs: '3',
         useBuiltIns: 'usage',
+        exclude: ['@babel/plugin-transform-regenerator'],
       },
     ],
   ],

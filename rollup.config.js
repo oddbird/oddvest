@@ -20,7 +20,9 @@ module.exports = modules.map((name) => ({
     rollupResolve(),
     rollupCommonjs(),
     rollupTypescript(),
-    rollupBabel(),
+    rollupBabel({
+      extensions: ['.js', '.ts'],
+    }),
     rollupTerser(),
   ],
   output: {
