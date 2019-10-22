@@ -65,6 +65,9 @@ To compile the JavaScript/TypeScript files, run `yarn build`.
 You can also run individual development commands:
 
 ```
+# start a watcher to compile assets on changes
+yarn watch
+
 # format/lint all files, and type-check TypeScript files
 yarn lint
 
@@ -130,8 +133,6 @@ Push to `master` on GitHub and your changes will be automatically deployed.
 Infra:
 
 - Add more unit tests.
-- Add sourcemaps.
-- Add development build watcher.
 - Better styling and icons.
 
 Bugs:
