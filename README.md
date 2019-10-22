@@ -96,16 +96,16 @@ project), you'll need a few additional things set up:
    access to one account" and "I want access to Harvest" is all you need.
 
 4. Create a new Trello Power-Up specifically for your local development of
-   OddVest at https://trello.com/power-ups. The "Iframe Connector URL" should
-   be your ngrok URL from above. On the Capabilities tab, you need to enable
-   "On Enable", "Show Settings", "Card Buttons", "Card Badges", "Card Detail
-   Badges", "Card-back Section", "Authorization Status" and "Show
+   OddVest at https://trello.com/power-ups/admin. The "Iframe Connector URL"
+   should be your ngrok URL from above. On the Capabilities tab, you need to
+   enable "On Enable", "Show Settings", "Card Buttons", "Card Badges", "Card
+   Detail Badges", "Card-back Section", "Authorization Status" and "Show
    Authorization" capabilities. Note that changes on the capabilities tab don't
-   seem to save unless you go back to the main tab and clieck the Save button.
+   seem to save unless you go back to the main tab and click the Save button.
 
-5. On some test board where you won't disrupt others' work, enable your test
-   power-up (per the instructions above). Now this board will use your local
-   version of Oddvest.
+5. On some test board where you won't disrupt others' work, make sure the prod
+   Oddvest power-up is disabled and enable your test power-up (per the
+   instructions above). Now this board will use your local version of Oddvest.
 
 ### Project layout
 
