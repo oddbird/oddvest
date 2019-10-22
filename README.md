@@ -131,6 +131,7 @@ Infra:
 
 - Add more unit tests.
 - Add sourcemaps.
+- Add development build watcher.
 - Better styling and icons.
 
 Bugs:
