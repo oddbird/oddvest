@@ -129,13 +129,16 @@ Push to `master` on GitHub and your changes will be automatically deployed.
 
 Infra:
 
-- Graceful handling of not-yet-authorized state.
-- See if we can avoid asking for write perms to Harvest.
 - Add more unit tests.
 - Add sourcemaps.
 - Better styling and icons.
 
-Features:
+Bugs:
 
 - Correct and performant for older time entries.
+- Graceful handling of not-yet-authorized state.
+- See if we can avoid asking for write perms to Harvest.
+
+Features:
+
 - Add ability to start/stop a timer for the card's task, direct from the card.
