@@ -23,7 +23,7 @@ export default () => {
   const setTaskForm = document.getElementById('setTaskForm');
   /* istanbul ignore else */
   if (setTaskForm) {
-    setTaskForm.addEventListener('submit', (event) => {
+    setTaskForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const sel = document.getElementById('taskId') as HTMLSelectElement | null;
       const selectedOption = sel && sel.selectedOptions[0];
@@ -34,41 +34,38 @@ export default () => {
               name: selectedOption.text,
             }
           : null;
-      return setTask(t, task).then(() => {
-        t.closePopup();
-      });
+      await setTask(t, task);
+      t.closePopup();
     });
   }
 
   t.render(() =>
-    TrelloPromise.all([getTask(t), getProjectId(t)])
-      .then(([currentTask, projectId]) => {
+    TrelloPromise.all([getTask(t), getProjectId(t)]).then(
+      async ([currentTask, projectId]) => {
         // @@@ TODO if we ever assign more than 100 tasks to a single project, this
         // will break due to API pagination. So let's not do that, m'kay.
-        getHarvestJSON(
+        const data: TaskAssignmentsData = await getHarvestJSON(
           t,
           `projects/${projectId}/task_assignments?is_active=true`,
-        ).then((data: TaskAssignmentsData) => {
-          const sel = document.getElementById(
-            'taskId',
-          ) as HTMLSelectElement | null;
-          /* istanbul ignore if */
-          if (!sel) {
-            return;
+        );
+        const sel = document.getElementById(
+          'taskId',
+        ) as HTMLSelectElement | null;
+        /* istanbul ignore if */
+        if (!sel) {
+          return;
+        }
+        for (const assignment of data.task_assignments) {
+          const opt = document.createElement('option');
+          opt.value = assignment.task.id.toString();
+          opt.text = assignment.task.name;
+          if (currentTask && assignment.task.id === currentTask.id) {
+            opt.defaultSelected = true;
           }
-          for (const assignment of data.task_assignments) {
-            const opt = document.createElement('option');
-            opt.value = assignment.task.id.toString();
-            opt.text = assignment.task.name;
-            if (currentTask && assignment.task.id === currentTask.id) {
-              opt.defaultSelected = true;
-            }
-            sel.add(opt);
-          }
-        });
-      })
-      .then(() => {
+          sel.add(opt);
+        }
         t.sizeTo('#setTaskForm');
-      }),
+      },
+    ),
   );
 };

@@ -134,7 +134,6 @@ Infra:
 - Graceful handling of not-yet-authorized state.
 - See if we can avoid asking for write perms to Harvest.
 - Add more unit tests.
-- Switch to async/await.
 - Better styling and icons.
 
 Features:

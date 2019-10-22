@@ -1,5 +1,5 @@
 import { getHarvestJSON } from './lib/harvest';
-import { getProjectId, setProjectId } from './lib/store';
+import { getProjectId, setProjectId, TrelloPromise } from './lib/store';
 
 interface Project {
   id: number;
@@ -38,43 +38,38 @@ export default () => {
   const settingsForm = document.getElementById('settingsForm');
   /* istanbul ignore else */
   if (settingsForm) {
-    settingsForm.addEventListener('submit', (event) => {
+    settingsForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const projectId = document.getElementById(
         'projectId',
       ) as HTMLSelectElement | null;
-      return setProjectId(t, (projectId && projectId.value) || '').then(() => {
-        t.closePopup();
-      });
+      await setProjectId(t, (projectId && projectId.value) || '');
+      t.closePopup();
     });
   }
 
   t.render(() =>
-    getProjectId(t)
-      .then((currentProjectId) => {
-        getHarvestJSON(t, 'projects?is_active=true').then(
-          (data: ProjectsData) => {
-            const sel = document.getElementById(
-              'projectId',
-            ) as HTMLSelectElement | null;
-            /* istanbul ignore if */
-            if (!sel) {
-              return;
-            }
-            for (const project of data.projects) {
-              const opt = document.createElement('option');
-              opt.value = project.id.toString();
-              opt.text = project.name;
-              if (project.id === currentProjectId) {
-                opt.defaultSelected = true;
-              }
-              sel.add(opt);
-            }
-          },
-        );
-      })
-      .then(() => {
-        t.sizeTo('#settingsForm');
-      }),
+    TrelloPromise.all([
+      getProjectId(t),
+      getHarvestJSON(t, 'projects?is_active=true'),
+    ]).then(([currentProjectId, data]: [number, ProjectsData]) => {
+      const sel = document.getElementById(
+        'projectId',
+      ) as HTMLSelectElement | null;
+      /* istanbul ignore if */
+      if (!sel) {
+        return;
+      }
+      for (const project of data.projects) {
+        const opt = document.createElement('option');
+        opt.value = project.id.toString();
+        opt.text = project.name;
+        if (project.id === currentProjectId) {
+          opt.defaultSelected = true;
+        }
+        sel.add(opt);
+      }
+      t.sizeTo('#settingsForm');
+    }),
   );
 };

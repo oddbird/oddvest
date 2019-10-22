@@ -38,17 +38,20 @@ export default () => {
         height: 230, // Max height is 500
       },
     }),
-    'card-badges': (t) =>
-      getTask(t).then((task) => [
+    'card-badges': async (t) => {
+      const task = await getTask(t);
+      return [
         {
           icon:
             'https://cdn.glitch.com/c69415fd-f70e-4e03-b43b-98b8960cd616%2Frocket-ship-grey.png?1496162964717',
           text: task ? task.name : 'no task!',
           color: task ? null : 'red',
         },
-      ]),
-    'card-detail-badges': (t) =>
-      getTask(t).then((task) => [
+      ];
+    },
+    'card-detail-badges': async (t) => {
+      const task = await getTask(t);
+      return [
         {
           title: 'Task',
           text: task ? task.name : 'no task!',
@@ -59,12 +62,12 @@ export default () => {
               url: 'set_task.html',
             }),
         },
-      ]),
-    'authorization-status': (t) =>
-      getAuthToken(t).then((authToken) =>
-        // TODO actually check if the authToken is valid
-        ({ authorized: authToken !== null }),
-      ),
+      ];
+    },
+    'authorization-status': async (t) => {
+      const authToken = await getAuthToken(t);
+      return { authorized: authToken !== null };
+    },
     'show-authorization': (t) =>
       t.popup({
         title: 'Authorize Harvest Account',

@@ -14,17 +14,12 @@ export default () => {
   if (!authBtn) {
     return;
   }
-  authBtn.addEventListener('click', () => {
-    getClientId(t)
-      .then(
-        (clientId) =>
-          // eslint-disable-next-line max-len
-          `https://id.getharvest.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`,
-      )
-      .then((oauthUrl) => {
-        t.authorize(oauthUrl)
-          .then((token) => setAuthToken(t, token))
-          .then(() => t.closePopup());
-      });
+  authBtn.addEventListener('click', async () => {
+    const clientId = await getClientId(t);
+    // eslint-disable-next-line max-len
+    const oauthUrl = `https://id.getharvest.com/oauth2/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}`;
+    const token = await t.authorize(oauthUrl);
+    await setAuthToken(t, token);
+    t.closePopup();
   });
 };
