@@ -10,7 +10,8 @@
   "license": "SEE LICENSE IN LICENSE",
   "private": true,
   "engines": {
-    "node": "10.16.3"
+    "node": "12.13.0",
+    "yarn": "1.19.1"
   },
   "scripts": {
     "prettier:js": "prettier --write \"**/*.{js,ts}\"",
