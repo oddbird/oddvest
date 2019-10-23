@@ -3,16 +3,16 @@ jobs:
   build:
     working_directory: ~/oddvest
     docker:
-      - image: circleci/node:10.16.3
+      - image: circleci/node:12.13.0
     steps:
       - checkout
       - restore_cache:
-          key: oddvest-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: oddvest-{{ checksum ".nvmrc" }}-{{ checksum "yarn.lock" }}-{{ checksum ".yarnrc" }}
       - run:
           name: Install Dependencies
           command: yarn install --frozen-lockfile
       - save_cache:
-          key: oddvest-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          key: oddvest-{{ checksum ".nvmrc" }}-{{ checksum "yarn.lock" }}-{{ checksum ".yarnrc" }}
           paths:
             - ./node_modules
       - run:

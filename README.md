@@ -48,13 +48,28 @@ Oddvest!
 
 ## Development
 
-Install node & [yarn](https://yarnpkg.com/en/docs/install):
+### Install Node and Yarn
 
 We recommend using [nvm](https://github.com/nvm-sh/nvm) for node version
-management. Once you have it installed, run `nvm install` (once per active
-shell) to use the correct version of node for Oddvest development.
+management. [Install it](https://github.com/nvm-sh/nvm#installation-and-update)
+if necessary, then run `nvm install` (once per active shell) to use the correct
+version of node for Oddvest development.
 
-Install dependencies:
+The correct [Yarn](https://yarnpkg.com/) version is included in the repo, and
+will be used automatically for any `yarn` command.
+
+To upgrade the node version used by Oddvest, update the version number in three
+places and then run `nvm install` to upgrade:
+
+- `.nvmrc`
+- `package.json` (`engines.node` field)
+- `.circleci/config.yml` (`docker.image` field)
+
+To upgrade the yarn version used by Oddvest, update the version number in
+`package.json` (`engines.yarn` field) and run
+`yarn policies set-version <new-version>`.
+
+### Install dependencies
 
 ```
 yarn

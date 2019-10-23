@@ -2,6 +2,7 @@
 .git/
 .nyc_output/
 .vscode/
+.yarn/
 coverage/
 dist/
 htmlcov/
