@@ -18,10 +18,11 @@
     "eslint": "eslint \"**/*.{js,ts}\" --ext .js,.ts --fix",
     "tsc": "tsc",
     "lint": "run-s prettier:* eslint tsc",
-    "test:ci": "JEST_JUNIT_OUTPUT_DIR='./coverage' jest --ci --runInBand --reporters=default --reporters=jest-junit",
+    "test:ci": "JEST_JUNIT_OUTPUT_DIR=\"./coverage\" jest --ci --runInBand --reporters=default --reporters=jest-junit",
     "test:coverage": "cat ./coverage/lcov.info | coveralls",
     "test:watch": "jest --watchAll",
     "test": "jest",
+    "watch": "rollup -c --watch",
     "build": "rollup -c"
   },
   "devDependencies": {

@@ -29,5 +29,6 @@ module.exports = modules.map((name) => ({
     file: `dist/${name}.js`,
     format: 'iife',
     name,
+    sourcemap: true,
   },
 }));
