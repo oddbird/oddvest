@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/oddvest
     docker:
-      - image: circleci/node:lts
+      - image: circleci/node:12.13.0
     steps:
       - checkout
       - restore_cache:
