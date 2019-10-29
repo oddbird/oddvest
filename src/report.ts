@@ -63,6 +63,11 @@ export default () => {
   t.render(() =>
     TrelloPromise.all([getTask(t), getProjectId(t)]).then(
       async ([task, projectId]) => {
+        const taskName = document.getElementById('harvestTaskName');
+        /* istanbul ignore else */
+        if (taskName) {
+          taskName.innerHTML = task ? task.name : 'not set';
+        }
         const container = document.getElementById('reportContainer');
         if (!task || !container) {
           if (container) {
@@ -70,11 +75,6 @@ export default () => {
           }
           t.sizeTo('#allContainer');
           return;
-        }
-        const taskName = document.getElementById('harvestTaskName');
-        /* istanbul ignore else */
-        if (taskName) {
-          taskName.innerHTML = task.name;
         }
         const table = document.createElement('table');
         const data: TimeEntriesData = await getHarvestJSON(
