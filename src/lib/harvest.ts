@@ -11,9 +11,7 @@ export const getHarvestJSON = (t: Trello, path: string) =>
         headers: {
           'Harvest-Account-ID': accountId,
           Authorization: `Bearer ${authToken}`,
-          // Harvest API docs say to send this, but they don't include it in
-          // Access-Control-Allow-Headers so it's a CORS violation to send it.
-          // 'User-Agent': 'Oddvest (carl@oddbird.net)',
+          'User-Agent': 'Oddvest (carl@oddbird.net)',
         },
       }).then((response) => response.json()),
   );
