@@ -9,8 +9,9 @@ describe('harvest', () => {
       loadSecret: (key) => `${key}TestSecret`,
     };
     const url = `${API_BASE_URL}some/path`;
-    fetchMock.get(url, { some: 'data' });
+    fetchMock.getOnce(url, { some: 'data' });
     const data = await getHarvestJSON(trello, 'some/path');
+
     expect(data).toEqual({ some: 'data' });
     expect(
       fetchMock.called(url, {
