@@ -1,21 +1,5 @@
-import { getHarvestJSON } from './lib/harvest';
+import { getTaskAssignments } from './lib/harvest';
 import { getProjectId, getTask, setTask, TrelloPromise } from './lib/store';
-
-interface TaskAssignment {
-  id: number;
-  is_active: boolean;
-  billable: boolean;
-  created_at: string;
-  updated_at: string;
-  hourly_rate: number | null;
-  budget: number | null;
-  project: { id: number; name: string; code: string };
-  task: { id: number; name: string };
-}
-
-interface TaskAssignmentsData extends HarvestAPIResponse {
-  task_assignments: TaskAssignment[];
-}
 
 export default () => {
   const t = TrelloPowerUp.iframe();
@@ -42,12 +26,7 @@ export default () => {
   t.render(() =>
     TrelloPromise.all([getTask(t), getProjectId(t)]).then(
       async ([currentTask, projectId]) => {
-        // @@@ TODO if we ever assign more than 100 tasks to a single project,
-        // this will break due to API pagination. So let's not do that, m'kay.
-        const data: TaskAssignmentsData = await getHarvestJSON(
-          t,
-          `projects/${projectId}/task_assignments?is_active=true`,
-        );
+        const data = await getTaskAssignments(t, projectId);
         const sel = document.getElementById(
           'taskId',
         ) as HTMLSelectElement | null;
