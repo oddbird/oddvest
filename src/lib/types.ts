@@ -25,7 +25,7 @@ interface TaskAssignment {
   task: { id: number; name: string };
 }
 
-export interface TaskAssignmentsData extends HarvestAPIResponse {
+export interface TaskAssignmentsResponse extends HarvestAPIResponse {
   task_assignments: TaskAssignment[];
 }
 
@@ -81,7 +81,7 @@ interface TimeEntry {
   };
 }
 
-export interface TimeEntriesData extends HarvestAPIResponse {
+export interface TimeEntriesResponse extends HarvestAPIResponse {
   time_entries: TimeEntry[];
 }
 
@@ -112,6 +112,6 @@ interface Project {
   client: { id: number; name: string; currency: string };
 }
 
-export interface ProjectsData extends HarvestAPIResponse {
+export interface ProjectsResponse extends HarvestAPIResponse {
   projects: Project[];
 }

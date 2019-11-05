@@ -3,7 +3,11 @@ import 'whatwg-fetch';
 import BluebirdPromise from 'bluebird';
 
 import { getAuthToken, getEnableConfig, TrelloPromise } from './store';
-import { ProjectsData, TaskAssignmentsData, TimeEntriesData } from './types';
+import {
+  ProjectsResponse,
+  TaskAssignmentsResponse,
+  TimeEntriesResponse,
+} from './types';
 
 export const API_BASE_URL = 'https://api.harvestapp.com/v2/';
 
@@ -24,14 +28,14 @@ export const getHarvestJSON = (t: Trello, path: string) =>
 export const getTaskAssignments = (
   t: Trello,
   projectId: number,
-): BluebirdPromise<TaskAssignmentsData> =>
+): BluebirdPromise<TaskAssignmentsResponse> =>
   getHarvestJSON(t, `projects/${projectId}/task_assignments?is_active=true`);
 
 export const getTimeEntries = (
   t: Trello,
   projectId: number,
-): BluebirdPromise<TimeEntriesData> =>
+): BluebirdPromise<TimeEntriesResponse> =>
   getHarvestJSON(t, `time_entries?project_id=${projectId}`);
 
-export const getProjects = (t: Trello): BluebirdPromise<ProjectsData> =>
+export const getProjects = (t: Trello): BluebirdPromise<ProjectsResponse> =>
   getHarvestJSON(t, 'projects?is_active=true');
