@@ -1,6 +1,10 @@
 import fetchMock from 'fetch-mock';
 
-import { API_BASE_URL, getHarvestJSON } from '../src/lib/harvest';
+import {
+  API_BASE_URL,
+  getHarvestJSON,
+  getHarvestJSONAll,
+} from '../src/lib/harvest';
 import trelloMock from './trello-mock.js';
 
 describe('getHarvestJSON', () => {
@@ -18,5 +22,17 @@ describe('getHarvestJSON', () => {
         },
       }),
     ).toBe(true);
+  });
+});
+
+describe('getHarvestJSONAll', () => {
+  test('gets data from multiple pages, stopping when there are no more', async () => {
+    const firstUrl = `${API_BASE_URL}some/path`;
+    const secondUrl = `${firstUrl}?page=2`;
+    fetchMock
+      .getOnce(firstUrl, { things: ['one', 'two'], links: { next: secondUrl } })
+      .getOnce(secondUrl, { things: ['three'], links: { next: null } });
+    const data = await getHarvestJSONAll(trelloMock, 'some/path', 'things');
+    expect(data).toEqual(['one', 'two', 'three']);
   });
 });

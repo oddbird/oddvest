@@ -11,10 +11,10 @@ import {
 
 export const API_BASE_URL = 'https://api.harvestapp.com/v2/';
 
-export const getHarvestJSON = (t: Trello, path: string) =>
+const getHarvestJSONFromUrl = (t: Trello, url: string) =>
   TrelloPromise.all([getEnableConfig(t), getAuthToken(t)]).then(
     ([{ accountId }, authToken]) =>
-      fetch(API_BASE_URL + path, {
+      fetch(url, {
         headers: {
           'Harvest-Account-ID': accountId,
           Authorization: `Bearer ${authToken}`,
@@ -22,6 +22,29 @@ export const getHarvestJSON = (t: Trello, path: string) =>
         },
       }).then((response) => response.json()),
   );
+
+export const getHarvestJSON = (t: Trello, path: string) =>
+  getHarvestJSONFromUrl(t, API_BASE_URL + path);
+
+export const getHarvestJSONAll = async (
+  t: Trello,
+  path: string,
+  dataKey: string,
+) => {
+  let url = API_BASE_URL + path;
+  const data = [];
+  while (url) {
+    // I think we could make this more efficient by getting the total number of
+    // pages on the first request, and then firing off concurrent requests for
+    // all remaining pages. But just iterating pages is simpler to start with.
+    //
+    // eslint-disable-next-line no-await-in-loop
+    const page = await getHarvestJSONFromUrl(t, url);
+    data.push(...page[dataKey]);
+    url = page.links.next;
+  }
+  return data;
+};
 
 // @@@ TODO if we ever assign more than 100 tasks to a single project,
 // this will break due to API pagination. So let's not do that, m'kay.
