@@ -19,7 +19,7 @@ export default () => {
 
   t.render(() =>
     TrelloPromise.all([getProjectId(t), getProjects(t)]).then(
-      ([currentProjectId, projectsResponse]) => {
+      ([currentProjectId, projects]) => {
         const sel = document.getElementById(
           'projectId',
         ) as HTMLSelectElement | null;
@@ -27,7 +27,7 @@ export default () => {
         if (!sel) {
           return;
         }
-        for (const project of projectsResponse.projects) {
+        for (const project of projects) {
           const opt = document.createElement('option');
           opt.value = project.id.toString();
           opt.text = project.name;

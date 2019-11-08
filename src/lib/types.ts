@@ -85,7 +85,7 @@ export interface TimeEntriesResponse extends HarvestAPIResponse {
   time_entries: TimeEntry[];
 }
 
-interface Project {
+export interface Project {
   id: number;
   name: string;
   code: string;
