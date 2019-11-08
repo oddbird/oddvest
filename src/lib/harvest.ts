@@ -5,7 +5,8 @@ import { Project, TaskAssignment, TimeEntry } from './types';
 
 export const API_BASE_URL = 'https://api.harvestapp.com/v2/';
 
-const getHarvestJSONFromUrl = async (t: Trello, url: string) => {
+// get a single request (one page) JSON response from Harvest API
+export const getHarvestJSON = async (t: Trello, url: string) => {
   const [{ accountId }, authToken] = await Promise.all([
     getEnableConfig(t),
     getAuthToken(t),
@@ -20,10 +21,8 @@ const getHarvestJSONFromUrl = async (t: Trello, url: string) => {
   return response.json();
 };
 
-export const getHarvestJSON = (t: Trello, path: string) =>
-  getHarvestJSONFromUrl(t, API_BASE_URL + path);
-
-export const getHarvestJSONAll = async (
+// get all available data (all pages) from a given Harvest API path
+export const getHarvestData = async (
   t: Trello,
   path: string,
   dataKey: string,
@@ -36,7 +35,7 @@ export const getHarvestJSONAll = async (
     // all remaining pages. But just iterating pages is simpler to start with.
     //
     // eslint-disable-next-line no-await-in-loop
-    const page = await getHarvestJSONFromUrl(t, url);
+    const page = await getHarvestJSON(t, url);
 
     // There is a race condition here due to the lack of persistent cursors for
     // paginating the Harvest API. If a new entry is added or removed from
@@ -59,7 +58,7 @@ export const getTaskAssignments = (
   t: Trello,
   projectId: number,
 ): Promise<TaskAssignment[]> =>
-  getHarvestJSONAll(
+  getHarvestData(
     t,
     `projects/${projectId}/task_assignments?is_active=true`,
     'task_assignments',
@@ -69,7 +68,7 @@ export const getTimeEntries = (
   t: Trello,
   projectId: number,
 ): Promise<TimeEntry[]> =>
-  getHarvestJSONAll(t, `time_entries?project_id=${projectId}`, 'time_entries');
+  getHarvestData(t, `time_entries?project_id=${projectId}`, 'time_entries');
 
 export const getProjects = (t: Trello): Promise<Project[]> =>
-  getHarvestJSONAll(t, 'projects?is_active=true', 'projects');
+  getHarvestData(t, 'projects?is_active=true', 'projects');
