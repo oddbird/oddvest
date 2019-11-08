@@ -36,6 +36,18 @@ export const getHarvestJSONAll = async (
     //
     // eslint-disable-next-line no-await-in-loop
     const page = await getHarvestJSONFromUrl(t, url);
+
+    // There is a race condition here due to the lack of persistent cursors for
+    // paginating the Harvest API. If a new entry is added or removed from
+    // Harvest while we are iterating pages, our pages will get off-by-one and
+    // we will either skip or duplicate an entry. If we are only concerned
+    // about new entries added (because generally things shouldn't be deleted),
+    // and if all entries have unique IDs (I think they do), we can just dedupe
+    // by ID. If we want to also handle deletion races, then we have to pay
+    // attention to the `total_entries` key that comes with each response, and
+    // if it changes while we are paging through, we need to go back and
+    // re-fetch all pages that had the old `total_entries` count, looking for
+    // any new ID in those pages that we didn't see before.
     data.push(...page[dataKey]);
     url = page.links.next;
   }
