@@ -1,16 +1,13 @@
 import fetchMock from 'fetch-mock';
 
 import { API_BASE_URL, getHarvestJSON } from '../src/lib/harvest';
+import trelloMock from './trello-mock.js';
 
-describe('harvest', () => {
+describe('getHarvestJSON', () => {
   test('gets JSON data from Harvest via XHR', async () => {
-    const trello = {
-      get: (scope, visibility, key) => `${scope + visibility + key}TestValue`,
-      loadSecret: (key) => `${key}TestSecret`,
-    };
     const url = `${API_BASE_URL}some/path`;
     fetchMock.getOnce(url, { some: 'data' });
-    const data = await getHarvestJSON(trello, 'some/path');
+    const data = await getHarvestJSON(trelloMock, 'some/path');
 
     expect(data).toEqual({ some: 'data' });
     expect(
