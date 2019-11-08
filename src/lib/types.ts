@@ -29,7 +29,7 @@ export interface TaskAssignmentsResponse extends HarvestAPIResponse {
   task_assignments: TaskAssignment[];
 }
 
-interface TimeEntry {
+export interface TimeEntry {
   id: number;
   spent_date: string;
   hours: number;

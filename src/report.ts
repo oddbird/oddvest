@@ -23,10 +23,10 @@ export default () => {
         TrelloPromise.all([
           getTimeEntries(t, projectId),
           getTaskAssignments(t, projectId),
-        ]).then(([timeEntriesResponse, taskAssignments]) => {
+        ]).then(([timeEntries, taskAssignments]) => {
           // Add time entry info
           const table = document.createElement('table');
-          const taskEntries = timeEntriesResponse.time_entries.filter(
+          const taskEntries = timeEntries.filter(
             (entry) => entry.task.id === task.id,
           );
           const hoursByDev = taskEntries.reduce(
