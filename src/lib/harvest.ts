@@ -1,21 +1,24 @@
 import 'whatwg-fetch';
 
-import { getAuthToken, getEnableConfig, TrelloPromise } from './store';
+import { getAuthToken, getEnableConfig } from './store';
 import { Project, TaskAssignment, TimeEntry } from './types';
 
 export const API_BASE_URL = 'https://api.harvestapp.com/v2/';
 
-const getHarvestJSONFromUrl = (t: Trello, url: string) =>
-  TrelloPromise.all([getEnableConfig(t), getAuthToken(t)]).then(
-    ([{ accountId }, authToken]) =>
-      fetch(url, {
-        headers: {
-          'Harvest-Account-ID': accountId,
-          Authorization: `Bearer ${authToken}`,
-          'User-Agent': 'Oddvest (carl@oddbird.net)',
-        },
-      }).then((response) => response.json()),
-  );
+const getHarvestJSONFromUrl = async (t: Trello, url: string) => {
+  const [{ accountId }, authToken] = await Promise.all([
+    getEnableConfig(t),
+    getAuthToken(t),
+  ]);
+  const response = await fetch(url, {
+    headers: {
+      'Harvest-Account-ID': accountId,
+      Authorization: `Bearer ${authToken}`,
+      'User-Agent': 'Oddvest (carl@oddbird.net)',
+    },
+  });
+  return response.json();
+};
 
 export const getHarvestJSON = (t: Trello, path: string) =>
   getHarvestJSONFromUrl(t, API_BASE_URL + path);
