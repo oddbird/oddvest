@@ -13,7 +13,7 @@ type HarvestAPIResponse = {
   };
 };
 
-interface TaskAssignment {
+export interface TaskAssignment {
   id: number;
   is_active: boolean;
   billable: boolean;

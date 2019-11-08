@@ -26,7 +26,7 @@ export default () => {
   t.render(() =>
     TrelloPromise.all([getTask(t), getProjectId(t)]).then(
       async ([currentTask, projectId]) => {
-        const taskAssignmentsResponse = await getTaskAssignments(t, projectId);
+        const taskAssignments = await getTaskAssignments(t, projectId);
         const sel = document.getElementById(
           'taskId',
         ) as HTMLSelectElement | null;
@@ -34,7 +34,7 @@ export default () => {
         if (!sel) {
           return;
         }
-        for (const assignment of taskAssignmentsResponse.task_assignments) {
+        for (const assignment of taskAssignments) {
           const opt = document.createElement('option');
           opt.value = assignment.task.id.toString();
           opt.text = assignment.task.name;

@@ -23,7 +23,7 @@ export default () => {
         TrelloPromise.all([
           getTimeEntries(t, projectId),
           getTaskAssignments(t, projectId),
-        ]).then(([timeEntriesResponse, taskAssignmentsResponse]) => {
+        ]).then(([timeEntriesResponse, taskAssignments]) => {
           // Add time entry info
           const table = document.createElement('table');
           const taskEntries = timeEntriesResponse.time_entries.filter(
@@ -49,7 +49,7 @@ export default () => {
           container.innerHTML = '';
 
           // Add budget info
-          const taskAssignment = taskAssignmentsResponse.task_assignments.find(
+          const taskAssignment = taskAssignments.find(
             (assignment) => assignment.task.id === task.id,
           );
           const budget = taskAssignment ? taskAssignment.budget : null;

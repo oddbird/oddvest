@@ -3,11 +3,7 @@ import 'whatwg-fetch';
 import BluebirdPromise from 'bluebird';
 
 import { getAuthToken, getEnableConfig, TrelloPromise } from './store';
-import {
-  ProjectsResponse,
-  TaskAssignmentsResponse,
-  TimeEntriesResponse,
-} from './types';
+import { ProjectsResponse, TaskAssignment, TimeEntriesResponse } from './types';
 
 export const API_BASE_URL = 'https://api.harvestapp.com/v2/';
 
@@ -46,13 +42,15 @@ export const getHarvestJSONAll = async (
   return data;
 };
 
-// @@@ TODO if we ever assign more than 100 tasks to a single project,
-// this will break due to API pagination. So let's not do that, m'kay.
 export const getTaskAssignments = (
   t: Trello,
   projectId: number,
-): BluebirdPromise<TaskAssignmentsResponse> =>
-  getHarvestJSON(t, `projects/${projectId}/task_assignments?is_active=true`);
+): Promise<TaskAssignment[]> =>
+  getHarvestJSONAll(
+    t,
+    `projects/${projectId}/task_assignments?is_active=true`,
+    'task_assignments',
+  );
 
 export const getTimeEntries = (
   t: Trello,
