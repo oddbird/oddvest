@@ -1,5 +1,6 @@
 import { getTaskAssignments, getTimeEntries } from './lib/harvest';
 import { getProjectId, getTask } from './lib/store';
+import { summarizeTimeEntries } from './lib/time';
 
 export default () => {
   const t = TrelloPowerUp.iframe();
@@ -25,16 +26,7 @@ export default () => {
     ]);
     // Add time entry info
     const table = document.createElement('table');
-    const taskEntries = timeEntries.filter(
-      (entry) => entry.task.id === task.id,
-    );
-    const hoursByDev = taskEntries.reduce(
-      (acc, entry) => {
-        acc[entry.user.name] = (acc[entry.user.name] || 0) + entry.hours;
-        return acc;
-      },
-      {} as { [key: string]: number },
-    );
+    const hoursByDev = summarizeTimeEntries(timeEntries)[task.id] || {};
     for (const [devName, hours] of Object.entries(hoursByDev)) {
       const row = table.insertRow();
       row.insertCell().innerHTML = devName;
