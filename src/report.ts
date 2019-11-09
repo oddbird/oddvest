@@ -1,6 +1,9 @@
-import { getTaskAssignments, getTimeEntries } from './lib/harvest';
+import {
+  getTaskAssignments,
+  getTimeEntries,
+  summarizeTimeEntries,
+} from './lib/harvest';
 import { getProjectId, getTask } from './lib/store';
-import { summarizeTimeEntries } from './lib/time';
 
 export default () => {
   const t = TrelloPowerUp.iframe();
