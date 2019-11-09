@@ -1,7 +1,13 @@
 import 'whatwg-fetch';
 
 import { getAuthToken, getEnableConfig } from './store';
-import { Project, TaskAssignment, TaskSummaries, TimeEntry } from './types';
+import {
+  Project,
+  TaskAssignment,
+  TaskSummaries,
+  TimeEntry,
+  TimeSummary,
+} from './types';
 
 export const API_BASE_URL = 'https://api.harvestapp.com/v2/';
 
@@ -68,7 +74,11 @@ export const getTimeEntries = (
   t: Trello,
   projectId: number,
 ): Promise<TimeEntry[]> =>
-  getHarvestData(t, `time_entries?project_id=${projectId}`, 'time_entries');
+  getHarvestData(
+    t,
+    `time_entries?is_running=false&project_id=${projectId}`,
+    'time_entries',
+  );
 
 export const getProjects = (t: Trello): Promise<Project[]> =>
   getHarvestData(t, 'projects?is_active=true', 'projects');
@@ -84,3 +94,13 @@ export const summarizeTimeEntries = (entries: TimeEntry[]): TaskSummaries =>
     },
     {} as { [key: number]: { [key: string]: number } },
   );
+
+// get TimeSummary for a given task
+export const getTimeSummary = async (
+  t: Trello,
+  projectId: number,
+  taskId: number,
+): Promise<TimeSummary> => {
+  const timeEntries = await getTimeEntries(t, projectId);
+  return summarizeTimeEntries(timeEntries)[taskId] || {};
+};

@@ -1,8 +1,4 @@
-import {
-  getTaskAssignments,
-  getTimeEntries,
-  summarizeTimeEntries,
-} from './lib/harvest';
+import { getTaskAssignments, getTimeSummary } from './lib/harvest';
 import { getProjectId, getTask } from './lib/store';
 
 export default () => {
@@ -23,13 +19,9 @@ export default () => {
       t.sizeTo('#allContainer');
       return;
     }
-    const [timeEntries, taskAssignments] = await Promise.all([
-      getTimeEntries(t, projectId),
-      getTaskAssignments(t, projectId),
-    ]);
     // Add time entry info
     const table = document.createElement('table');
-    const hoursByDev = summarizeTimeEntries(timeEntries)[task.id] || {};
+    const hoursByDev = getTimeSummary(t, projectId, task.id);
     for (const [devName, hours] of Object.entries(hoursByDev)) {
       const row = table.insertRow();
       row.insertCell().innerHTML = devName;
@@ -43,6 +35,7 @@ export default () => {
     container.innerHTML = '';
 
     // Add budget info
+    const taskAssignments = await getTaskAssignments(t, projectId);
     const taskAssignment = taskAssignments.find(
       (assignment) => assignment.task.id === task.id,
     );
