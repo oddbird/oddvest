@@ -115,3 +115,13 @@ export interface Project {
 export interface ProjectsResponse extends HarvestAPIResponse {
   projects: Project[];
 }
+
+// map of dev-name -> total-hours
+export interface TimeSummary {
+  [key: string]: number;
+}
+
+// map of task-id -> TimeSummary
+export interface TaskSummaries {
+  [key: number]: TimeSummary;
+}
