@@ -21,7 +21,7 @@ export default () => {
     }
     // Add time entry info
     const table = document.createElement('table');
-    const hoursByDev = getTimeSummary(t, projectId, task.id);
+    const hoursByDev = await getTimeSummary(t, projectId, task.id);
     for (const [devName, hours] of Object.entries(hoursByDev)) {
       const row = table.insertRow();
       row.insertCell().innerHTML = devName;

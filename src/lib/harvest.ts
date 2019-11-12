@@ -102,5 +102,6 @@ export const getTimeSummary = async (
   taskId: number,
 ): Promise<TimeSummary> => {
   const timeEntries = await getTimeEntries(t, projectId);
-  return summarizeTimeEntries(timeEntries)[taskId] || {};
+  const summary = summarizeTimeEntries(timeEntries);
+  return summary[taskId] || {};
 };
