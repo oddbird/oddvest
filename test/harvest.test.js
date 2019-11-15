@@ -34,13 +34,13 @@ describe('getHarvestData', () => {
     fetchMock
       .getOnce(firstUrl, {
         things: [{ id: 1 }, { id: 2 }],
-        links: { next: secondUrl },
+        total_pages: 2,
       })
       .getOnce(secondUrl, {
         things: [{ id: 1 }, { id: 3 }],
-        links: { next: null },
+        total_pages: 2,
       });
-    const data = await getHarvestData(trelloMock, 'some/path', 'things');
+    const data = await getHarvestData(trelloMock, 'some/path', {}, 'things');
 
     expect(data).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }]);
   });
@@ -73,13 +73,13 @@ describe('getTimeSummary', () => {
           { id: 1, task: { id: 12 }, user: { name: 'A' }, hours: 1.2 },
           { id: 2, task: { id: 13 }, user: { name: 'A' }, hours: 3.1 },
         ],
-        links: { next: secondUrl },
+        total_pages: 2,
       })
       .getOnce(secondUrl, {
         time_entries: [
           { id: 3, task: { id: 12 }, user: { name: 'B' }, hours: 0.5 },
         ],
-        links: { next: null },
+        total_pages: 2,
       });
     const summary = await getTimeSummary(trelloMock, projectId, taskId);
     expect(summary).toEqual({ A: 1.2, B: 0.5 });
