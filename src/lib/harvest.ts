@@ -1,5 +1,7 @@
 import 'whatwg-fetch';
 
+import uniqBy from 'lodash.uniqby';
+
 import { getAuthToken, getEnableConfig } from './store';
 import {
   HarvestAPIResponse,
@@ -48,23 +50,25 @@ export const getHarvestData = async (
     const page: HarvestAPIResponse = await getHarvestJSON(t, url);
     const pageData = page[dataKey];
 
-    // @@@ There is a race condition here due to the lack of persistent cursors
-    // for paginating the Harvest API. If a new entry is added or removed from
+    // There is a race condition here due to the lack of persistent cursors for
+    // paginating the Harvest API. If a new entry is added or removed from
     // Harvest while we are iterating pages, our pages will get off-by-one and
-    // we will either skip or duplicate an entry. If we are only concerned about
-    // new entries added (because generally things shouldn't be deleted), and if
-    // all entries have unique IDs (I think they do), we can just dedupe by ID.
-    // If we want to also handle deletion races, then we have to pay attention
-    // to the `total_entries` key that comes with each response, and if it
-    // changes while we are paging through, we need to go back and re-fetch all
-    // pages that had the old `total_entries` count, looking for any new ID in
-    // those pages that we didn't see before.
+    // we will either skip or duplicate an entry.
+    //
+    // We handle new entries added (because generally things shouldn't be
+    // deleted) by removing duplicate IDs (since all entries have unique IDs).
+    //
+    // If we would want to also handle deletion races, then we'd have to pay
+    // attention to the `total_entries` key that comes with each response, and
+    // if it changes while we are paging through, we'd need to go back and
+    // re-fetch all pages that had the old `total_entries` count, looking for
+    // any new ID in those pages that we didn't see before.
     if (pageData) {
       data.push(...pageData);
     }
     url = page.links.next;
   }
-  return data;
+  return uniqBy(data, 'id');
 };
 
 export const getTaskAssignments = (

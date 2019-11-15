@@ -28,15 +28,21 @@ describe('getHarvestJSON', () => {
 });
 
 describe('getHarvestData', () => {
-  test('gets data from multiple pages, stopping when there are no more', async () => {
+  test('gets deduped data from multiple pages, stopping when there are no more', async () => {
     const firstUrl = `${API_BASE_URL}some/path`;
     const secondUrl = `${firstUrl}?page=2`;
     fetchMock
-      .getOnce(firstUrl, { things: ['one', 'two'], links: { next: secondUrl } })
-      .getOnce(secondUrl, { things: ['three'], links: { next: null } });
+      .getOnce(firstUrl, {
+        things: [{ id: 1 }, { id: 2 }],
+        links: { next: secondUrl },
+      })
+      .getOnce(secondUrl, {
+        things: [{ id: 1 }, { id: 3 }],
+        links: { next: null },
+      });
     const data = await getHarvestData(trelloMock, 'some/path', 'things');
 
-    expect(data).toEqual(['one', 'two', 'three']);
+    expect(data).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }]);
   });
 });
 
@@ -64,13 +70,15 @@ describe('getTimeSummary', () => {
     fetchMock
       .getOnce(firstUrl, {
         time_entries: [
-          { task: { id: 12 }, user: { name: 'A' }, hours: 1.2 },
-          { task: { id: 13 }, user: { name: 'A' }, hours: 3.1 },
+          { id: 1, task: { id: 12 }, user: { name: 'A' }, hours: 1.2 },
+          { id: 2, task: { id: 13 }, user: { name: 'A' }, hours: 3.1 },
         ],
         links: { next: secondUrl },
       })
       .getOnce(secondUrl, {
-        time_entries: [{ task: { id: 12 }, user: { name: 'B' }, hours: 0.5 }],
+        time_entries: [
+          { id: 3, task: { id: 12 }, user: { name: 'B' }, hours: 0.5 },
+        ],
         links: { next: null },
       });
     const summary = await getTimeSummary(trelloMock, projectId, taskId);
