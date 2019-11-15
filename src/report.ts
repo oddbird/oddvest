@@ -19,9 +19,14 @@ export default () => {
       t.sizeTo('#allContainer');
       return;
     }
+    // Get hours and budget data
+    const [hoursByDev, taskAssignments] = await Promise.all([
+      getTimeSummary(t, projectId, task.id),
+      getTaskAssignments(t, projectId),
+    ]);
+
     // Add time entry info
     const table = document.createElement('table');
-    const hoursByDev = await getTimeSummary(t, projectId, task.id);
     for (const [devName, hours] of Object.entries(hoursByDev)) {
       const row = table.insertRow();
       row.insertCell().innerHTML = devName;
@@ -35,7 +40,6 @@ export default () => {
     container.innerHTML = '';
 
     // Add budget info
-    const taskAssignments = await getTaskAssignments(t, projectId);
     const taskAssignment = taskAssignments.find(
       (assignment) => assignment.task.id === task.id,
     );

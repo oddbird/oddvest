@@ -1,4 +1,4 @@
-type HarvestAPIResponse = {
+export interface HarvestAPIResponse {
   per_page: number;
   total_pages: number;
   total_entries: number;
@@ -11,7 +11,10 @@ type HarvestAPIResponse = {
     previous: string | null;
     last: string;
   };
-};
+  task_assignments?: TaskAssignment[];
+  time_entries?: TimeEntry[];
+  projects?: Project[];
+}
 
 export interface TaskAssignment {
   id: number;
@@ -23,10 +26,6 @@ export interface TaskAssignment {
   budget: number | null;
   project: { id: number; name: string; code: string };
   task: { id: number; name: string };
-}
-
-export interface TaskAssignmentsResponse extends HarvestAPIResponse {
-  task_assignments: TaskAssignment[];
 }
 
 export interface TimeEntry {
@@ -81,10 +80,6 @@ export interface TimeEntry {
   };
 }
 
-export interface TimeEntriesResponse extends HarvestAPIResponse {
-  time_entries: TimeEntry[];
-}
-
 export interface Project {
   id: number;
   name: string;
@@ -110,10 +105,6 @@ export interface Project {
   created_at: string;
   updated_at: string;
   client: { id: number; name: string; currency: string };
-}
-
-export interface ProjectsResponse extends HarvestAPIResponse {
-  projects: Project[];
 }
 
 // map of dev-name -> total-hours
