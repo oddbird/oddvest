@@ -1,5 +1,5 @@
 import { getTaskAssignments } from './lib/harvest';
-import { getProjectId, getTask, setTask, TrelloPromise } from './lib/store';
+import { getProjectId, getTask, setTask } from './lib/store';
 
 export default () => {
   const t = TrelloPowerUp.iframe();
@@ -23,28 +23,26 @@ export default () => {
     });
   }
 
-  t.render(() =>
-    TrelloPromise.all([getTask(t), getProjectId(t)]).then(
-      async ([currentTask, projectId]) => {
-        const taskAssignmentsResponse = await getTaskAssignments(t, projectId);
-        const sel = document.getElementById(
-          'taskId',
-        ) as HTMLSelectElement | null;
-        /* istanbul ignore if */
-        if (!sel) {
-          return;
-        }
-        for (const assignment of taskAssignmentsResponse.task_assignments) {
-          const opt = document.createElement('option');
-          opt.value = assignment.task.id.toString();
-          opt.text = assignment.task.name;
-          if (currentTask && assignment.task.id === currentTask.id) {
-            opt.defaultSelected = true;
-          }
-          sel.add(opt);
-        }
-        t.sizeTo('#setTaskForm');
-      },
-    ),
-  );
+  t.render(async () => {
+    const [currentTask, projectId] = await Promise.all([
+      getTask(t),
+      getProjectId(t),
+    ]);
+    const taskAssignments = await getTaskAssignments(t, projectId);
+    const sel = document.getElementById('taskId') as HTMLSelectElement | null;
+    /* istanbul ignore if */
+    if (!sel) {
+      return;
+    }
+    for (const assignment of taskAssignments) {
+      const opt = document.createElement('option');
+      opt.value = assignment.task.id.toString();
+      opt.text = assignment.task.name;
+      if (currentTask && assignment.task.id === currentTask.id) {
+        opt.defaultSelected = true;
+      }
+      sel.add(opt);
+    }
+    t.sizeTo('#setTaskForm');
+  });
 };

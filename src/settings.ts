@@ -1,5 +1,5 @@
 import { getProjects } from './lib/harvest';
-import { getProjectId, setProjectId, TrelloPromise } from './lib/store';
+import { getProjectId, setProjectId } from './lib/store';
 
 export default () => {
   const t = TrelloPowerUp.iframe();
@@ -17,27 +17,27 @@ export default () => {
     });
   }
 
-  t.render(() =>
-    TrelloPromise.all([getProjectId(t), getProjects(t)]).then(
-      ([currentProjectId, projectsResponse]) => {
-        const sel = document.getElementById(
-          'projectId',
-        ) as HTMLSelectElement | null;
-        /* istanbul ignore if */
-        if (!sel) {
-          return;
-        }
-        for (const project of projectsResponse.projects) {
-          const opt = document.createElement('option');
-          opt.value = project.id.toString();
-          opt.text = project.name;
-          if (project.id === currentProjectId) {
-            opt.defaultSelected = true;
-          }
-          sel.add(opt);
-        }
-        t.sizeTo('#settingsForm');
-      },
-    ),
-  );
+  t.render(async () => {
+    const [currentProjectId, projects] = await Promise.all([
+      getProjectId(t),
+      getProjects(t),
+    ]);
+    const sel = document.getElementById(
+      'projectId',
+    ) as HTMLSelectElement | null;
+    /* istanbul ignore if */
+    if (!sel) {
+      return;
+    }
+    for (const project of projects) {
+      const opt = document.createElement('option');
+      opt.value = project.id.toString();
+      opt.text = project.name;
+      if (project.id === currentProjectId) {
+        opt.defaultSelected = true;
+      }
+      sel.add(opt);
+    }
+    t.sizeTo('#settingsForm');
+  });
 };

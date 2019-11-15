@@ -1,5 +1,3 @@
-export const TrelloPromise = TrelloPowerUp.Promise;
-
 export const getClientId = (t: Trello) =>
   t.get('board', 'shared', 'harvestClientId');
 
@@ -18,14 +16,16 @@ export const setEnableConfig = (
     harvestAccountId: accountId,
   });
 
-export const getEnableConfig = (t: Trello) =>
-  TrelloPromise.all([
+export const getEnableConfig = async (t: Trello) => {
+  const [clientId, accountId] = await Promise.all([
     getClientId(t),
     t.get('board', 'shared', 'harvestAccountId'),
-  ]).then(([clientId, accountId]: [string, string]) => ({
+  ]);
+  return {
     clientId,
     accountId,
-  }));
+  };
+};
 
 export const setAuthToken = (t: Trello, token: string) =>
   // TODO This API uses localStorage, ideally we'd catch any error here if
