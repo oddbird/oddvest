@@ -1,13 +1,33 @@
 import fetchMock from 'fetch-mock';
 
 import {
+  addUrlParams,
   API_BASE_URL,
   getHarvestData,
   getHarvestJSON,
+  getProjects,
+  getTaskAssignments,
   getTimeSummary,
   summarizeTimeEntries,
 } from '../src/lib/harvest';
 import trelloMock from './trello-mock.js';
+
+describe('addUrlParams', () => {
+  test('has default args', () => {
+    const results = addUrlParams('https://example.com');
+    expect(results).toEqual('https://example.com/');
+  });
+
+  test('disallows duplicate keys', () => {
+    const results = addUrlParams(
+      'https://example.com/?key=value&another=thing',
+      { key: 'value', another: 'val' },
+    );
+    expect(results).toEqual(
+      'https://example.com/?key=value&another=thing&another=val',
+    );
+  });
+});
 
 describe('getHarvestJSON', () => {
   test('gets JSON data from Harvest via XHR', async () => {
@@ -43,6 +63,43 @@ describe('getHarvestData', () => {
     const data = await getHarvestData(trelloMock, 'some/path', {}, 'things');
 
     expect(data).toEqual([{ id: 1 }, { id: 2 }, { id: 3 }]);
+  });
+
+  test('handles non-results', async () => {
+    const data = await getHarvestData(trelloMock, 'some/path', {}, 'things');
+
+    expect(data).toEqual([]);
+  });
+
+  test('handles malformed pageResponse data', async () => {
+    const firstUrl = `${API_BASE_URL}some/path`;
+    const secondUrl = `${firstUrl}?page=2`;
+    fetchMock
+      .getOnce(firstUrl, {
+        total_pages: 2,
+      })
+      .getOnce(secondUrl, {
+        total_pages: 2,
+      });
+    const data = await getHarvestData(trelloMock, 'some/path', {});
+
+    expect(data).toEqual([]);
+  });
+});
+
+describe('getTaskAssignments', () => {
+  test('calls getHarvestData', async () => {
+    const data = await getTaskAssignments(trelloMock, 1);
+
+    expect(data).toEqual([]);
+  });
+});
+
+describe('getProjects', () => {
+  test('calls getHarvestData', async () => {
+    const data = await getProjects(trelloMock);
+
+    expect(data).toEqual([]);
   });
 });
 
@@ -83,5 +140,29 @@ describe('getTimeSummary', () => {
       });
     const summary = await getTimeSummary(trelloMock, projectId, taskId);
     expect(summary).toEqual({ A: 1.2, B: 0.5 });
+  });
+
+  test('defaults to an empty object', async () => {
+    const projectId = 1;
+    const taskId = 16;
+    // eslint-disable-next-line max-len
+    const firstUrl = `${API_BASE_URL}time_entries?is_running=false&project_id=${projectId}`;
+    const secondUrl = `${firstUrl}&page=2`;
+    fetchMock
+      .getOnce(firstUrl, {
+        time_entries: [
+          { id: 1, task: { id: 12 }, user: { name: 'A' }, hours: 1.2 },
+          { id: 2, task: { id: 13 }, user: { name: 'A' }, hours: 3.1 },
+        ],
+        total_pages: 2,
+      })
+      .getOnce(secondUrl, {
+        time_entries: [
+          { id: 3, task: { id: 12 }, user: { name: 'B' }, hours: 0.5 },
+        ],
+        total_pages: 2,
+      });
+    const summary = await getTimeSummary(trelloMock, projectId, taskId);
+    expect(summary).toEqual({});
   });
 });
