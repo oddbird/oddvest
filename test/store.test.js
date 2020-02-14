@@ -35,8 +35,19 @@ describe('setAuthToken', () => {
 });
 
 describe('getAuthToken', () => {
+  let originalError;
+
+  beforeAll(() => {
+    originalError = console.error;
+
+    console.error = jest.fn();
+  });
+
+  afterAll(() => {
+    console.error = originalError;
+  });
+
   test('returns null on an error', async () => {
-    // TODO: how do we suppress console logging in our tests?
     const localTrelloMock = {
       loadSecret: jest.fn().mockImplementation(() => {
         throw new Error();
