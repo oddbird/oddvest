@@ -1,3 +1,5 @@
+import flushPromises from 'flush-promises';
+
 import auth from '../src/auth';
 
 describe('auth', () => {
@@ -32,8 +34,9 @@ describe('auth', () => {
 
   test('calls window.opener.authorize with token', async () => {
     auth();
-
-    await btn.click();
+    btn.click();
+    // We have to wait for the async click handler to finish entirely:
+    await flushPromises();
 
     expect(t.closePopup).toHaveBeenCalled();
   });
