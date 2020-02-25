@@ -13,6 +13,7 @@ export default () => {
     }
     const container = document.getElementById('reportContainer');
     if (!task || !container) {
+      /* istanbul ignore else */
       if (container) {
         container.innerHTML = '';
       }
