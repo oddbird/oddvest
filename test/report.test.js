@@ -2,11 +2,19 @@ import flushPromises from 'flush-promises';
 
 import { getTaskAssignments, getTimeSummary } from '../src/lib/harvest';
 import { getProjectId, getTask } from '../src/lib/store';
+import report from '../src/report';
+import { t } from './trello-mock';
 
 jest.mock('../src/lib/harvest');
 jest.mock('../src/lib/store');
 
-import report from '../src/report';
+getProjectId.mockResolvedValue(1);
+getTask.mockResolvedValue({
+  id: 1,
+  name: 'First',
+});
+getTimeSummary.mockResolvedValue({});
+getTaskAssignments.mockResolvedValue([]);
 
 const makeElement = (tag, id) => {
   const el = document.createElement(tag);
@@ -17,36 +25,13 @@ const makeElement = (tag, id) => {
 };
 
 describe('report', () => {
-  let t;
-
   beforeEach(() => {
-    t = {
-      render: (cb) => cb(),
-      closePopup: jest.fn(),
-      sizeTo: jest.fn(),
-    };
-    window.TrelloPowerUp = {
-      iframe: () => t,
-    };
-
     makeElement('div', 'harvestTaskName');
     makeElement('form', 'reportContainer');
     makeElement('select', 'projectId');
   });
 
-  afterAll(() => {
-    delete window.TrelloPowerUp;
-  });
-
   test('report renders', async () => {
-    getProjectId.mockImplementation(() => 1);
-    getTask.mockImplementation(() => ({
-      id: 1,
-      name: 'First',
-    }));
-    getTimeSummary.mockImplementation(() => ({}));
-    getTaskAssignments.mockImplementation(() => []);
-
     report();
     await flushPromises();
 

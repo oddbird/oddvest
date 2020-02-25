@@ -1,158 +1,111 @@
+import client from '../src/client';
 import { getAuthToken, getTask } from '../src/lib/store';
+import { t, TrelloPowerUp } from './trello-mock';
 
 jest.mock('../src/lib/store');
 
-import client from '../src/client';
-
 describe('client', () => {
-  let tpuObject, mockT;
-
-  beforeAll(() => {
-    window.TrelloPowerUp = {
-      initialize: jest.fn().mockImplementation((obj) => {
-        tpuObject = obj;
-      }),
-    };
-    client();
-  });
+  let opts;
 
   beforeEach(() => {
-    mockT = {
-      popup: jest.fn(),
-      signUrl: jest.fn().mockImplementation((url) => url),
-    };
-  });
-
-  afterAll(() => {
-    delete window.TrelloPowerUp;
+    client();
+    opts = TrelloPowerUp.initialize.mock.calls[0][0];
   });
 
   test('on-enable calls t.popup', () => {
-    tpuObject['on-enable'](mockT);
-    expect(mockT.popup).toHaveBeenCalledWith({
-      title: 'Set up Oddvest',
-      url: './enable.html',
-      height: 184,
-    });
+    opts['on-enable'](t);
+
+    expect(t.popup).toHaveBeenCalledTimes(1);
   });
 
   test('show-settings calls t.popup', () => {
-    tpuObject['show-settings'](mockT);
-    expect(mockT.popup).toHaveBeenCalledWith({
-      title: 'Configure Oddvest',
-      url: './settings.html',
-      height: 184,
-    });
+    opts['show-settings'](t);
+
+    expect(t.popup).toHaveBeenCalledTimes(1);
   });
 
   test('card-buttons returns correct object', () => {
-    const cardButtons = tpuObject['card-buttons']();
-    expect(cardButtons.length).toEqual(1);
-    expect(cardButtons[0].icon).toEqual(
-      'https://cdn.glitch.com/1b42d7fe-bda8-4af8-a6c8-eff0cea9e08a%2Frocket-ship.png?1494946700421',
-    );
+    const cardButtons = opts['card-buttons']();
+
+    expect(cardButtons).toHaveLength(1);
     expect(cardButtons[0].text).toEqual('Set Task');
 
-    cardButtons[0].callback(mockT);
-    expect(mockT.popup).toHaveBeenCalledWith({
-      title: 'Set Task',
-      url: 'set_task.html',
-    });
+    cardButtons[0].callback(t);
+    expect(t.popup).toHaveBeenCalledTimes(1);
   });
 
   test('card-back-section returns correct object', () => {
-    const cardBackSection = tpuObject['card-back-section'](mockT);
+    const cardBackSection = opts['card-back-section'](t);
 
-    expect(cardBackSection).toEqual({
-      title: 'Harvest Time',
-      icon:
-        'https://cdn.hyperdev.com/us-east-1%3A3d31b21c-01a0-4da2-8827-4bc6e88b7618%2Ficon-gray.svg',
-      content: {
-        type: 'iframe',
-        url: './report.html',
-        height: 230,
-      },
+    expect(cardBackSection.title).toEqual('Harvest Time');
+  });
+
+  describe('card-badges', () => {
+    test('returns correct object with present task', async () => {
+      const task = {
+        name: 'task name',
+      };
+      getTask.mockResolvedValue(task);
+      const cardBadges = await opts['card-badges'](t);
+
+      expect(cardBadges).toHaveLength(1);
+      expect(cardBadges[0].text).toEqual(task.name);
+      expect(cardBadges[0].color).toBeNull();
+    });
+
+    test('returns correct object with absent task', async () => {
+      getTask.mockResolvedValue();
+      const cardBadges = await opts['card-badges'](t);
+
+      expect(cardBadges).toHaveLength(1);
+      expect(cardBadges[0].text).toEqual('no task!');
+      expect(cardBadges[0].color).toEqual('red');
     });
   });
 
-  test('card-badges returns correct object with present task', async () => {
-    const task = {
-      name: 'test name',
-    };
-    getTask.mockImplementation(() => task);
-    const cardBadges = await tpuObject['card-badges'](mockT);
+  describe('card-detail-badges', () => {
+    test('returns correct object with present task', async () => {
+      const task = {
+        name: 'task name',
+      };
+      getTask.mockResolvedValue(task);
+      const cardDetailBadges = await opts['card-detail-badges'](t);
 
-    expect(cardBadges).toEqual([
-      {
-        icon:
-          'https://cdn.glitch.com/c69415fd-f70e-4e03-b43b-98b8960cd616%2Frocket-ship-grey.png?1496162964717',
-        text: 'test name',
-        color: null,
-      },
-    ]);
-  });
+      expect(cardDetailBadges).toHaveLength(1);
+      expect(cardDetailBadges[0].title).toEqual('Task');
+      expect(cardDetailBadges[0].text).toEqual('task name');
+      expect(cardDetailBadges[0].color).toBeNull();
 
-  test('card-badges returns correct object with absent task', async () => {
-    getTask.mockImplementation(() => null);
-    const cardBadges = await tpuObject['card-badges'](mockT);
+      cardDetailBadges[0].callback(t);
 
-    expect(cardBadges).toEqual([
-      {
-        icon:
-          'https://cdn.glitch.com/c69415fd-f70e-4e03-b43b-98b8960cd616%2Frocket-ship-grey.png?1496162964717',
-        text: 'no task!',
-        color: 'red',
-      },
-    ]);
-  });
-
-  test('card-detail-badges returns correct object with present task', async () => {
-    const task = {
-      name: 'test name',
-    };
-    getTask.mockImplementation(() => task);
-    const cardDetailBadges = await tpuObject['card-detail-badges'](mockT);
-
-    expect(cardDetailBadges.length).toEqual(1);
-    expect(cardDetailBadges[0].title).toEqual('Task');
-    expect(cardDetailBadges[0].text).toEqual('test name');
-    expect(cardDetailBadges[0].color).toBeNull();
-
-    cardDetailBadges[0].callback(mockT);
-    expect(mockT.popup).toHaveBeenCalledWith({
-      title: 'Set Task',
-      url: 'set_task.html',
+      expect(t.popup).toHaveBeenCalledTimes(1);
     });
-  });
 
-  test('card-detail-badges returns correct object with absent task', async () => {
-    getTask.mockImplementation(() => null);
-    const cardDetailBadges = await tpuObject['card-detail-badges'](mockT);
+    test('returns correct object with absent task', async () => {
+      getTask.mockResolvedValue();
+      const cardDetailBadges = await opts['card-detail-badges'](t);
 
-    expect(cardDetailBadges.length).toEqual(1);
-    expect(cardDetailBadges[0].title).toEqual('Task');
-    expect(cardDetailBadges[0].text).toEqual('no task!');
-    expect(cardDetailBadges[0].color).toEqual('red');
+      expect(cardDetailBadges).toHaveLength(1);
+      expect(cardDetailBadges[0].title).toEqual('Task');
+      expect(cardDetailBadges[0].text).toEqual('no task!');
+      expect(cardDetailBadges[0].color).toEqual('red');
 
-    cardDetailBadges[0].callback(mockT);
-    expect(mockT.popup).toHaveBeenCalledWith({
-      title: 'Set Task',
-      url: 'set_task.html',
+      cardDetailBadges[0].callback(t);
+
+      expect(t.popup).toHaveBeenCalledTimes(1);
     });
   });
 
   test('authorization-status returns correct object', async () => {
-    getAuthToken.mockImplementation(() => null);
-    const authorizationStatus = await tpuObject['authorization-status'](mockT);
+    getAuthToken.mockResolvedValue(null);
+    const authorizationStatus = await opts['authorization-status'](t);
+
     expect(authorizationStatus).toEqual({ authorized: false });
   });
 
   test('show-authorization calls t.popup', () => {
-    tpuObject['show-authorization'](mockT);
-    expect(mockT.popup).toHaveBeenCalledWith({
-      title: 'Authorize Harvest Account',
-      url: './auth.html',
-      height: 140,
-    });
+    opts['show-authorization'](t);
+
+    expect(t.popup).toHaveBeenCalledTimes(1);
   });
 });

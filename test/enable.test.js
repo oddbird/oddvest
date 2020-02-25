@@ -1,10 +1,10 @@
 import flushPromises from 'flush-promises';
 
+import enable from '../src/enable';
 import { getEnableConfig, setEnableConfig } from '../src/lib/store';
+import { t } from './trello-mock';
 
 jest.mock('../src/lib/store');
-
-import enable from '../src/enable';
 
 const makeElement = (tag, id) => {
   const el = document.createElement(tag);
@@ -15,61 +15,67 @@ const makeElement = (tag, id) => {
 };
 
 describe('enable', () => {
-  let t, form, submitHandler;
+  let form, clientId, accountId, submitHandler;
 
   beforeAll(() => {
-    t = {
-      render: (cb) => cb(),
-      closePopup: jest.fn(),
-      sizeTo: jest.fn(),
-    };
-    window.TrelloPowerUp = {
-      iframe: () => t,
-    };
-
     form = makeElement('form', 'enableForm');
-    makeElement('input', 'clientId');
-    makeElement('input', 'accountId');
+    clientId = makeElement('input', 'clientId');
+    accountId = makeElement('input', 'accountId');
 
     form.addEventListener = (name, cb) => {
       submitHandler = cb;
     };
   });
 
-  afterAll(() => {
-    delete window.TrelloPowerUp;
-  });
-
-  test('enable renders with values from getEnableConfig', async () => {
-    getEnableConfig.mockImplementation(() => ({
-      clientId: 'clientId',
-      accountId: 'accountId',
-    }));
-
+  test('renders with values from getEnableConfig', async () => {
+    getEnableConfig.mockResolvedValue({
+      clientId: 'client-id',
+      accountId: 'account-id',
+    });
     enable();
     await flushPromises();
 
+    expect(clientId.value).toEqual('client-id');
+    expect(accountId.value).toEqual('account-id');
     expect(t.sizeTo).toHaveBeenCalledWith('#enableForm');
   });
 
-  test('enable renders with missing values from getEnableConfig', async () => {
-    getEnableConfig.mockImplementation(() => ({}));
-
+  test('renders with missing values from getEnableConfig', async () => {
+    getEnableConfig.mockResolvedValue({});
     enable();
     await flushPromises();
 
+    expect(clientId.value).toEqual('');
+    expect(accountId.value).toEqual('');
     expect(t.sizeTo).toHaveBeenCalledWith('#enableForm');
   });
 
   test('submit calls setEnableConfig', async () => {
-    getEnableConfig.mockImplementation(() => ({}));
+    getEnableConfig.mockResolvedValue({
+      clientId: 'client-id',
+      accountId: 'account-id',
+    });
     enable();
+    await flushPromises();
+    await submitHandler({ preventDefault: jest.fn() });
 
+    expect(setEnableConfig).toHaveBeenCalledWith(t, {
+      clientId: 'client-id',
+      accountId: 'account-id',
+    });
+    expect(t.closePopup).toHaveBeenCalledTimes(1);
+  });
+
+  test('submit uses default values if missing', async () => {
+    getEnableConfig.mockResolvedValue({});
+    enable();
+    await flushPromises();
     await submitHandler({ preventDefault: jest.fn() });
 
     expect(setEnableConfig).toHaveBeenCalledWith(t, {
       clientId: '',
       accountId: '',
     });
+    expect(t.closePopup).toHaveBeenCalledTimes(1);
   });
 });

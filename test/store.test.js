@@ -7,16 +7,16 @@ import {
   setProjectId,
   setTask,
 } from '../src/lib/store';
-import trelloMock from './trello-mock.js';
+import { t } from './trello-mock.js';
 
 describe('setEnableConfig', () => {
   test('sets config on Trello', () => {
-    setEnableConfig(trelloMock, {
+    setEnableConfig(t, {
       clientId: 'clientId',
       accountId: 'accountId',
     });
 
-    expect(trelloMock.set).toHaveBeenCalledWith('board', 'shared', {
+    expect(t.set).toHaveBeenCalledWith('board', 'shared', {
       harvestClientId: 'clientId',
       harvestAccountId: 'accountId',
     });
@@ -25,9 +25,9 @@ describe('setEnableConfig', () => {
 
 describe('setAuthToken', () => {
   test('stores secret', () => {
-    setAuthToken(trelloMock, 'secret token');
+    setAuthToken(t, 'secret token');
 
-    expect(trelloMock.storeSecret).toHaveBeenCalledWith(
+    expect(t.storeSecret).toHaveBeenCalledWith(
       'harvestAuthToken',
       'secret token',
     );
@@ -59,9 +59,9 @@ describe('getAuthToken', () => {
 
 describe('setProjectId', () => {
   test('sets config on Trello', () => {
-    setProjectId(trelloMock, 'someId');
+    setProjectId(t, 'someId');
 
-    expect(trelloMock.set).toHaveBeenCalledWith(
+    expect(t.set).toHaveBeenCalledWith(
       'board',
       'shared',
       'harvestProjectId',
@@ -83,9 +83,9 @@ describe('getProjectId', () => {
 
 describe('setTask', () => {
   test('calls set on Trello', () => {
-    setTask(trelloMock, { id: 1, name: 'test' });
+    setTask(t, { id: 1, name: 'test' });
 
-    expect(trelloMock.set).toHaveBeenCalledWith(
+    expect(t.set).toHaveBeenCalledWith(
       'card',
       'shared',
       'harvestTask',
