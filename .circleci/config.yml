@@ -20,12 +20,14 @@ jobs:
           command: yarn lint
       - run:
           name: Run unit tests
-          command: yarn test:ci
+          command: yarn jest --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: './coverage'
       - run:
           name: Report Test Coverage
           command: yarn test:coverage
       - store_artifacts:
           path: coverage
-          destination: js-reports
+          destination: js-test-reports
       - store_test_results:
           path: coverage

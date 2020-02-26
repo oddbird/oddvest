@@ -17,7 +17,7 @@ const modules = [
 module.exports = modules.map((name) => ({
   input: `src/${name}.ts`,
   plugins: [
-    rollupResolve(),
+    rollupResolve({ browser: true }),
     rollupCommonjs(),
     rollupTypescript(),
     rollupBabel({
