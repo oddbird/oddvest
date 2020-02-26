@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/oddvest
     docker:
-      - image: circleci/node:12.13.0
+      - image: circleci/node:12.16.1
     steps:
       - checkout
       - restore_cache:
@@ -20,12 +20,14 @@ jobs:
           command: yarn lint
       - run:
           name: Run unit tests
-          command: yarn test:ci
+          command: yarn jest --ci --runInBand --reporters=default --reporters=jest-junit
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: './coverage'
       - run:
           name: Report Test Coverage
           command: yarn test:coverage
       - store_artifacts:
           path: coverage
-          destination: js-reports
+          destination: js-test-reports
       - store_test_results:
           path: coverage

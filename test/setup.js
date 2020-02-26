@@ -1,3 +1,9 @@
-import fetchMock from 'fetch-mock';
+import { TrelloPowerUp } from './helpers';
 
-afterEach(fetchMock.reset);
+beforeAll(() => {
+  window.TrelloPowerUp = TrelloPowerUp;
+});
+
+afterEach(() => {
+  document.body.innerHTML = '';
+});
