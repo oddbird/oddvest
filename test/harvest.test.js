@@ -1,7 +1,14 @@
-import fetchMock from 'fetch-mock';
+jest.mock('node-fetch', () => require('fetch-mock').sandbox());
+
+import fetchMock from 'node-fetch';
 
 import * as h from '../src/lib/harvest';
 import { t } from './helpers';
+
+afterEach(() => {
+  fetchMock.resetHistory();
+  fetchMock.resetBehavior();
+});
 
 describe('addUrlParams', () => {
   test('has default args', () => {
@@ -76,6 +83,10 @@ describe('getHarvestData', () => {
 
 describe('getTaskAssignments', () => {
   test('returns data', async () => {
+    const url = h.addUrlParams(`${h.API_BASE_URL}projects/1/task_assignments`, {
+      is_active: true,
+    });
+    fetchMock.getOnce(url, {});
     const data = await h.getTaskAssignments(t, 1);
 
     expect(data).toEqual([]);
@@ -84,6 +95,11 @@ describe('getTaskAssignments', () => {
 
 describe('getTimeEntries', () => {
   test('returns data', async () => {
+    const url = h.addUrlParams(`${h.API_BASE_URL}time_entries`, {
+      is_running: false,
+      project_id: 1,
+    });
+    fetchMock.getOnce(url, {});
     const data = await h.getTimeEntries(t, 1);
 
     expect(data).toEqual([]);
@@ -92,6 +108,10 @@ describe('getTimeEntries', () => {
 
 describe('getProjects', () => {
   test('returns data', async () => {
+    const url = h.addUrlParams(`${h.API_BASE_URL}projects`, {
+      is_active: true,
+    });
+    fetchMock.getOnce(url, {});
     const data = await h.getProjects(t);
 
     expect(data).toEqual([]);
@@ -134,10 +154,16 @@ describe('getTimeSummary', () => {
         total_pages: 2,
       });
     const summary = await h.getTimeSummary(t, projectId, taskId);
+
     expect(summary).toEqual({ A: 1.2, B: 0.5 });
   });
 
   test('defaults to an empty object', async () => {
+    const url = h.addUrlParams(`${h.API_BASE_URL}time_entries`, {
+      is_running: false,
+      project_id: 1,
+    });
+    fetchMock.getOnce(url, {});
     const projectId = 1;
     const taskId = 16;
     const summary = await h.getTimeSummary(t, projectId, taskId);

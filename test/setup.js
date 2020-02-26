@@ -1,5 +1,3 @@
-import fetchMock from 'fetch-mock';
-
 import { TrelloPowerUp } from './helpers';
 
 beforeAll(() => {
@@ -7,6 +5,5 @@ beforeAll(() => {
 });
 
 afterEach(() => {
-  fetchMock.reset();
   document.body.innerHTML = '';
 });

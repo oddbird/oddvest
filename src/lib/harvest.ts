@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
-import 'whatwg-fetch';
+import 'isomorphic-fetch';
 
 import uniqBy from 'lodash.uniqby';
 
@@ -16,7 +16,6 @@ import {
 
 export const API_BASE_URL = 'https://api.harvestapp.com/v2/';
 
-// Based on https://fetch.spec.whatwg.org/#fetch-api
 export const addUrlParams = (
   baseUrl: string,
   params: { [key: string]: string | number | boolean } = {},
@@ -118,14 +117,11 @@ export const getProjects = (t: Trello): Promise<Project[]> =>
 // summarize an array of TimeEntry to a task-id -> TimeSummary map
 // where a TimeSummary is a dev-name -> total-hours map
 export const summarizeTimeEntries = (entries: TimeEntry[]): TaskSummaries =>
-  entries.reduce(
-    (acc, entry) => {
-      const summary = (acc[entry.task.id] = acc[entry.task.id] || {});
-      summary[entry.user.name] = (summary[entry.user.name] || 0) + entry.hours;
-      return acc;
-    },
-    {} as { [key: number]: { [key: string]: number } },
-  );
+  entries.reduce((acc, entry) => {
+    const summary = (acc[entry.task.id] = acc[entry.task.id] || {});
+    summary[entry.user.name] = (summary[entry.user.name] || 0) + entry.hours;
+    return acc;
+  }, {} as { [key: number]: { [key: string]: number } });
 
 // get TimeSummary for a given task
 export const getTimeSummary = async (
