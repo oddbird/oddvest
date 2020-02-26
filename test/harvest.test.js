@@ -1,7 +1,7 @@
 import fetchMock from 'fetch-mock';
 
 import * as h from '../src/lib/harvest';
-import { t } from './trello-mock.js';
+import { t } from './helpers';
 
 describe('addUrlParams', () => {
   test('has default args', () => {

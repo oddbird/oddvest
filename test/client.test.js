@@ -1,6 +1,6 @@
 import client from '../src/client';
 import { getAuthToken, getTask } from '../src/lib/store';
-import { t, TrelloPowerUp } from './trello-mock';
+import { t, TrelloPowerUp } from './helpers';
 
 jest.mock('../src/lib/store');
 

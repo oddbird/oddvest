@@ -2,22 +2,14 @@ import flushPromises from 'flush-promises';
 
 import enable from '../src/enable';
 import { getEnableConfig, setEnableConfig } from '../src/lib/store';
-import { t } from './trello-mock';
+import { makeElement, t } from './helpers';
 
 jest.mock('../src/lib/store');
-
-const makeElement = (tag, id) => {
-  const el = document.createElement(tag);
-  el.id = id;
-  document.body.appendChild(el);
-
-  return el;
-};
 
 describe('enable', () => {
   let form, clientId, accountId, submitHandler;
 
-  beforeAll(() => {
+  beforeEach(() => {
     form = makeElement('form', 'enableForm');
     clientId = makeElement('input', 'clientId');
     accountId = makeElement('input', 'accountId');

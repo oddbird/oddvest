@@ -2,39 +2,42 @@ import flushPromises from 'flush-promises';
 
 import { getTaskAssignments } from '../src/lib/harvest';
 import { getProjectId, getTask, setTask } from '../src/lib/store';
+import set_task from '../src/set_task';
+import { makeElement, t } from './helpers';
 
 jest.mock('../src/lib/harvest');
 jest.mock('../src/lib/store');
 
-import set_task from '../src/set_task';
-
-const makeElement = (tag, id, parent) => {
-  const el = document.createElement(tag);
-  el.id = id;
-  (parent || document.body).appendChild(el);
-
-  return el;
-};
+getTask.mockResolvedValue({
+  id: 1,
+  name: 'First',
+});
+getProjectId.mockResolvedValue(1);
+getTaskAssignments.mockResolvedValue([
+  {
+    task: {
+      id: 1,
+      name: 'First',
+    },
+  },
+  {
+    task: {
+      id: 2,
+      name: 'Second',
+    },
+  },
+]);
 
 describe('set_task', () => {
-  let t, form, option, submitHandler;
+  let form, select, option, submitHandler;
 
   beforeEach(() => {
-    t = {
-      render: (cb) => cb(),
-      closePopup: jest.fn(),
-      sizeTo: jest.fn(),
-    };
-    window.TrelloPowerUp = {
-      iframe: () => t,
-    };
-
     form = makeElement('form', 'setTaskForm');
-    const select = makeElement('select', 'taskId');
+    select = makeElement('select', 'taskId');
 
     const defaultOption = makeElement('option', 'default', select);
-    // defaultOption.value = '';
-    defaultOption.text = '---';
+    defaultOption.value = '';
+    defaultOption.text = '--clear--';
 
     option = makeElement('option', 'opt1', select);
     option.value = '1';
@@ -43,51 +46,29 @@ describe('set_task', () => {
     form.addEventListener = (name, cb) => {
       submitHandler = cb;
     };
-
-    getTask.mockImplementation(() => ({
-      id: 1,
-      name: 'First',
-    }));
-    getProjectId.mockImplementation(() => 1);
-    getTaskAssignments.mockImplementation(() => [
-      {
-        task: {
-          id: 1,
-          name: 'First',
-        },
-      },
-      {
-        task: {
-          id: 2,
-          name: 'Second',
-        },
-      },
-    ]);
   });
 
-  afterAll(() => {
-    delete window.TrelloPowerUp;
-  });
-
-  test.skip('set_task renders', async () => {
+  test('renders select', async () => {
     set_task();
     await flushPromises();
 
     expect(t.sizeTo).toHaveBeenCalledWith('#setTaskForm');
+    expect(select.value).toEqual('1');
   });
 
   test('submit calls setTask', async () => {
-    option.selected = true;
     set_task();
+    await flushPromises();
     await submitHandler({ preventDefault: jest.fn() });
 
     expect(setTask).toHaveBeenCalledWith(t, { id: 1, name: 'First' });
+    expect(t.closePopup).toHaveBeenCalledTimes(1);
   });
 
-  // TODO: this doesn't work.
-  test.skip('submit calls setTask with null if nothing selected', async () => {
-    delete option.selected;
+  test('submit calls setTask with null if nothing selected', async () => {
     set_task();
+    await flushPromises();
+    select.value = '';
     await submitHandler({ preventDefault: jest.fn() });
 
     expect(setTask).toHaveBeenCalledWith(t, null);

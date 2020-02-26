@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
 import {
   getAuthToken,
+  getEnableConfig,
   getProjectId,
   getTask,
   setAuthToken,
@@ -7,24 +9,38 @@ import {
   setProjectId,
   setTask,
 } from '../src/lib/store';
-import { t } from './trello-mock.js';
+import { t } from './helpers';
 
 describe('setEnableConfig', () => {
   test('sets config on Trello', () => {
     setEnableConfig(t, {
-      clientId: 'clientId',
-      accountId: 'accountId',
+      clientId: 'client-id',
+      accountId: 'account-id',
     });
 
     expect(t.set).toHaveBeenCalledWith('board', 'shared', {
-      harvestClientId: 'clientId',
-      harvestAccountId: 'accountId',
+      harvestClientId: 'client-id',
+      harvestAccountId: 'account-id',
+    });
+  });
+});
+
+describe('getEnableConfig', () => {
+  test('gets config from Trello', async () => {
+    const result = await getEnableConfig(t, {
+      clientId: 'client-id',
+      accountId: 'account-id',
+    });
+
+    expect(result).toEqual({
+      clientId: 'boardsharedharvestClientIdTestValue',
+      accountId: 'boardsharedharvestAccountIdTestValue',
     });
   });
 });
 
 describe('setAuthToken', () => {
-  test('stores secret', () => {
+  test('stores secret token', () => {
     setAuthToken(t, 'secret token');
 
     expect(t.storeSecret).toHaveBeenCalledWith(
@@ -47,13 +63,23 @@ describe('getAuthToken', () => {
     console.error = originalError;
   });
 
+  test('gets secret token', async () => {
+    const result = await getAuthToken(t);
+
+    expect(result).toEqual('harvestAuthTokenTestSecret');
+  });
+
   test('returns null on an error', async () => {
+    const err = new Error('nope');
     const localTrelloMock = {
       loadSecret: jest.fn().mockImplementation(() => {
-        throw new Error();
+        throw err;
       }),
     };
-    expect(await getAuthToken(localTrelloMock)).toEqual(null);
+    const result = await getAuthToken(localTrelloMock);
+
+    expect(console.error).toHaveBeenCalledWith(err);
+    expect(result).toEqual(null);
   });
 });
 
@@ -71,9 +97,9 @@ describe('setProjectId', () => {
 });
 
 describe('getProjectId', () => {
-  test('returns the projectIdStr', async () => {
+  test('returns the projectId', async () => {
     const localTrelloMock = {
-      get: jest.fn().mockImplementation(() => '1'),
+      get: jest.fn().mockResolvedValue('1'),
     };
     const actual = await getProjectId(localTrelloMock);
 
@@ -95,9 +121,9 @@ describe('setTask', () => {
 });
 
 describe('getTask', () => {
-  test('calls set on Trello', async () => {
+  test('gets task from Trello', async () => {
     const localTrelloMock = {
-      get: jest.fn().mockImplementation(() => '{"id":1,"name":"test"}'),
+      get: jest.fn().mockResolvedValue('{"id":1,"name":"test"}'),
     };
     const actual = await getTask(localTrelloMock);
 
@@ -106,7 +132,7 @@ describe('getTask', () => {
 
   test('defaults to null', async () => {
     const localTrelloMock = {
-      get: jest.fn().mockImplementation(() => ''),
+      get: jest.fn().mockResolvedValue(''),
     };
     const actual = await getTask(localTrelloMock);
 

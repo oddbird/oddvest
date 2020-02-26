@@ -16,3 +16,11 @@ export const TrelloPowerUp = {
   initialize: jest.fn(),
   iframe: () => t,
 };
+
+export const makeElement = (tag, id, parent) => {
+  const el = document.createElement(tag);
+  el.id = id;
+  (parent || document.body).appendChild(el);
+
+  return el;
+};
