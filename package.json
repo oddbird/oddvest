@@ -23,7 +23,8 @@
     "test:watch": "jest --watchAll",
     "test": "jest",
     "watch": "rollup -c --watch",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "prepare": "husky install"
   },
   "dependencies": {
     "isomorphic-fetch": "^3.0.0",
@@ -62,11 +63,6 @@
     "prettier": "^2.7.1",
     "rollup": "^3.2.5",
     "typescript": "^4.8.4"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "lint-staged": {
     "*.{js,ts}": [
