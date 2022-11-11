@@ -140,7 +140,7 @@ are automatically built by Netlify on deploy.
 
 ### Deployment
 
-Push to `master` on GitHub and your changes will be automatically deployed.
+Push to `main` on GitHub and your changes will be automatically deployed.
 
 ## TODO
 
