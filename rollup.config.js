@@ -1,7 +1,7 @@
-const rollupBabel = require('rollup-plugin-babel');
+const rollupBabel = require('@rollup/plugin-babel');
 const rollupCommonjs = require('@rollup/plugin-commonjs');
 const rollupResolve = require('@rollup/plugin-node-resolve');
-const rollupTerser = require('rollup-plugin-terser').terser;
+const rollupTerser = require('@rollup/plugin-terser');
 const rollupTypescript = require('@rollup/plugin-typescript');
 
 const modules = [
@@ -21,6 +21,7 @@ module.exports = modules.map((name) => ({
     rollupCommonjs(),
     rollupTypescript(),
     rollupBabel({
+      babelHelpers: 'bundled',
       extensions: ['.js', '.ts'],
     }),
     rollupTerser(),

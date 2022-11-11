@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/camelcase */
-
 import 'isomorphic-fetch';
 
 import uniqBy from 'lodash.uniqby';

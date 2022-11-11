@@ -1,6 +1,6 @@
 # Oddvest
 
-[![CircleCI](https://circleci.com/gh/oddbird/oddvest.svg?style=svg)](https://circleci.com/gh/oddbird/oddvest) [![Coverage Status](https://coveralls.io/repos/github/oddbird/oddvest/badge.svg?branch=master)](https://coveralls.io/github/oddbird/oddvest?branch=master) [![Netlify Status](https://api.netlify.com/api/v1/badges/ac38ae99-f54e-436c-a0c9-5b4519a1bba4/deploy-status)](https://app.netlify.com/sites/oddvest/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ac38ae99-f54e-436c-a0c9-5b4519a1bba4/deploy-status)](https://app.netlify.com/sites/oddvest/deploys)
 
 OddBird's Trello Power-up for Harvest integration.
 
@@ -58,12 +58,11 @@ version of node for Oddvest development.
 The correct [Yarn](https://yarnpkg.com/) version is included in the repo, and
 will be used automatically for any `yarn` command.
 
-To upgrade the node version used by Oddvest, update the version number in three
+To upgrade the node version used by Oddvest, update the version number in two
 places and then run `nvm install` to upgrade:
 
 - `.nvmrc`
 - `package.json` (`engines.node` field)
-- `.circleci/config.yml` (`docker.image` field)
 
 To upgrade the yarn version used by Oddvest, update the version number in
 `package.json` (`engines.yarn` field) and run

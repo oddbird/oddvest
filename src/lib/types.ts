@@ -1,21 +1,3 @@
-export interface HarvestAPIResponse {
-  per_page: number;
-  total_pages: number;
-  total_entries: number;
-  next_page: number | null;
-  previous_page: number | null;
-  page: number;
-  links: {
-    first: string;
-    next: string | null;
-    previous: string | null;
-    last: string;
-  };
-  task_assignments?: TaskAssignment[];
-  time_entries?: TimeEntry[];
-  projects?: Project[];
-}
-
 export interface TaskAssignment {
   id: number;
   is_active: boolean;
@@ -115,4 +97,22 @@ export interface TimeSummary {
 // map of task-id -> TimeSummary
 export interface TaskSummaries {
   [key: number]: TimeSummary;
+}
+
+export interface HarvestAPIResponse {
+  per_page: number;
+  total_pages: number;
+  total_entries: number;
+  next_page: number | null;
+  previous_page: number | null;
+  page: number;
+  links: {
+    first: string;
+    next: string | null;
+    previous: string | null;
+    last: string;
+  };
+  task_assignments?: TaskAssignment[];
+  time_entries?: TimeEntry[];
+  projects?: Project[];
 }
