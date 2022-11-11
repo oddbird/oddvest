@@ -9,11 +9,11 @@ interface TrelloAsync {
 }
 
 declare global {
+  type Trello = TrelloSync & TrelloAsync;
+
   const TrelloPowerUp: {
     initialize: (opts: { [key: string]: (t: Trello) => any }) => void;
     iframe: () => Trello;
     Promise: typeof BluebirdPromise;
   };
-
-  type Trello = TrelloSync & TrelloAsync;
 }

@@ -83,7 +83,6 @@ rules:
     - 1
     - terms:
         - todo
-        - TODO
         - fixme
         - '@@@'
   no-with: 2
