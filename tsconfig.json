@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",
+    "module": "node18",
     "strict": true,
     "importHelpers": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,
@@ -15,8 +15,7 @@
     "noUnusedLocals": true,
     "sourceMap": true,
     "noEmit": true,
-    "isolatedModules": true,
-    "baseUrl": "."
+    "isolatedModules": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
