@@ -36,7 +36,6 @@ export const getAuthToken = async (t: Trello) => {
   try {
     return await t.loadSecret('harvestAuthToken');
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error(error);
     return null;
   }

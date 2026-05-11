@@ -4,19 +4,19 @@ import uniqBy from 'lodash.uniqby';
 
 import { getAuthToken, getEnableConfig } from './store';
 import {
-  HarvestAPIResponse,
-  Project,
-  TaskAssignment,
-  TaskSummaries,
-  TimeEntry,
-  TimeSummary,
+  type HarvestAPIResponse,
+  type Project,
+  type TaskAssignment,
+  type TaskSummaries,
+  type TimeEntry,
+  type TimeSummary,
 } from './types';
 
 export const API_BASE_URL = 'https://api.harvestapp.com/v2/';
 
 export const addUrlParams = (
   baseUrl: string,
-  params: { [key: string]: string | number | boolean } = {},
+  params: Record<string, string | number | boolean> = {},
 ) => {
   const url = new URL(baseUrl, API_BASE_URL);
   Object.keys(params).forEach((key) => {
@@ -52,7 +52,7 @@ export const getHarvestJSON = async (
 export const getHarvestData = async (
   t: Trello,
   path: string,
-  params: { [key: string]: string | number | boolean },
+  params: Record<string, string | number | boolean>,
   dataKey: 'task_assignments' | 'time_entries' | 'projects',
 ) => {
   const url = addUrlParams(path, params);
@@ -115,11 +115,14 @@ export const getProjects = (t: Trello): Promise<Project[]> =>
 // summarize an array of TimeEntry to a task-id -> TimeSummary map
 // where a TimeSummary is a dev-name -> total-hours map
 export const summarizeTimeEntries = (entries: TimeEntry[]): TaskSummaries =>
-  entries.reduce((acc, entry) => {
-    const summary = (acc[entry.task.id] = acc[entry.task.id] || {});
-    summary[entry.user.name] = (summary[entry.user.name] || 0) + entry.hours;
-    return acc;
-  }, {} as { [key: number]: { [key: string]: number } });
+  entries.reduce(
+    (acc, entry) => {
+      const summary = (acc[entry.task.id] = acc[entry.task.id] || {});
+      summary[entry.user.name] = (summary[entry.user.name] || 0) + entry.hours;
+      return acc;
+    },
+    {} as Record<number, Record<string, number>>,
+  );
 
 // get TimeSummary for a given task
 export const getTimeSummary = async (

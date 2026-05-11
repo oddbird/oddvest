@@ -1,13 +1,19 @@
-jest.mock('node-fetch', () => require('fetch-mock').sandbox());
-
-import fetchMock from 'node-fetch';
+import fetchMock from 'fetch-mock';
 
 import * as h from '../src/lib/harvest';
 import { t } from './helpers';
 
+beforeAll(() => {
+  fetchMock.mockGlobal();
+});
+
 afterEach(() => {
-  fetchMock.resetHistory();
-  fetchMock.resetBehavior();
+  fetchMock.clearHistory();
+  fetchMock.removeRoutes({ includeSticky: true });
+});
+
+afterAll(() => {
+  fetchMock.unmockGlobal();
 });
 
 describe('addUrlParams', () => {
@@ -37,7 +43,7 @@ describe('getHarvestJSON', () => {
 
     expect(data).toEqual({ some: 'data' });
     expect(
-      fetchMock.called(url, {
+      fetchMock.callHistory.called(url, {
         headers: {
           'Harvest-Account-ID': 'boardsharedharvestAccountIdTestValue',
           Authorization: 'Bearer harvestAuthTokenTestSecret',
@@ -136,7 +142,7 @@ describe('getTimeSummary', () => {
   test('gets time summary for a task', async () => {
     const projectId = 1;
     const taskId = 12;
-    // eslint-disable-next-line max-len
+
     const firstUrl = `${h.API_BASE_URL}time_entries?is_running=false&project_id=${projectId}`;
     const secondUrl = `${firstUrl}&page=2`;
     fetchMock
