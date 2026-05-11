@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "node18",
+    "module": "esnext",
     "strict": true,
     "importHelpers": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "noFallthroughCasesInSwitch": true,

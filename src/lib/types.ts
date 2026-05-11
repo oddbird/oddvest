@@ -90,14 +90,10 @@ export interface Project {
 }
 
 // map of dev-name -> total-hours
-export interface TimeSummary {
-  [key: string]: number;
-}
+export type TimeSummary = Record<string, number>;
 
 // map of task-id -> TimeSummary
-export interface TaskSummaries {
-  [key: number]: TimeSummary;
-}
+export type TaskSummaries = Record<number, TimeSummary>;
 
 export interface HarvestAPIResponse {
   per_page: number;

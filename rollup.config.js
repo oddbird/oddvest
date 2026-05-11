@@ -1,3 +1,5 @@
+'use strict';
+
 const rollupBabel = require('@rollup/plugin-babel');
 const rollupCommonjs = require('@rollup/plugin-commonjs');
 const rollupResolve = require('@rollup/plugin-node-resolve');

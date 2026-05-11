@@ -1,18 +1,16 @@
-import BluebirdPromise from 'bluebird';
+import type BluebirdPromise from 'bluebird';
 
 interface TrelloSync {
-  signUrl: (url: string, args?: { [key: string]: string }) => string;
+  signUrl: (url: string, args?: Record<string, string>) => string;
 }
 
-interface TrelloAsync {
-  [key: string]: (...args: any[]) => BluebirdPromise<any>;
-}
+type TrelloAsync = Record<string, (...args: any[]) => BluebirdPromise<any>>;
 
 declare global {
   type Trello = TrelloSync & TrelloAsync;
 
   const TrelloPowerUp: {
-    initialize: (opts: { [key: string]: (t: Trello) => any }) => void;
+    initialize: (opts: Record<string, (t: Trello) => any>) => void;
     iframe: () => Trello;
     Promise: typeof BluebirdPromise;
   };
